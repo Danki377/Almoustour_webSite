@@ -13,19 +13,6 @@ import {
 
 const services = [
   {
-    icon: GraduationCap,
-    title: "Accompagnement Étudiant",
-    description:
-      "Nous vous guidons dans toutes vos démarches pour étudier à l'étranger : choix de programme, dossier de candidature, et procédures d'inscription.",
-    features: [
-      "Conseil personnalisé",
-      "Dossier de candidature",
-      "Suivi administratif",
-      "Préparation aux entretiens",
-    ],
-    color: "from-blue-500 to-cyan-400",
-  },
-  {
     icon: Plane,
     title: "Achat & Réservation de Billets d'Avion",
     description:
@@ -37,6 +24,19 @@ const services = [
       "Suivi et modifications des vols",
     ],
     color: "from-sky-500 to-indigo-400",
+  },
+  {
+    icon: GraduationCap,
+    title: "Accompagnement Étudiant",
+    description:
+      "Nous vous guidons dans toutes vos démarches pour étudier à l'étranger : choix de programme, dossier de candidature, et procédures d'inscription.",
+    features: [
+      "Conseil personnalisé",
+      "Dossier de candidature",
+      "Suivi administratif",
+      "Préparation aux entretiens",
+    ],
+    color: "from-blue-500 to-cyan-400",
   },
   {
     icon: Plane,
