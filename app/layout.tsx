@@ -10,6 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   // 👇 ajoute ceci avec ton domaine (utilise l’URL vercel si tu n’as pas encore ton propre domaine)
+
   metadataBase: new URL("https://al-moustour-voyage.vercel.app"),
 
   title: "AL MOUSTOUR Voyages - Votre Partenaire pour Étudier à l'Étranger",
