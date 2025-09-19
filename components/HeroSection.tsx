@@ -51,7 +51,10 @@ export function HeroSection() {
   };
 
   return (
-    <section id="home" className="relative h-screen overflow-hidden pt-10">
+    <section
+      id="home"
+      className="relative h-screen overflow-hidden pt-32 md:pt-10"
+    >
       {/* Background Slider */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
