@@ -6,7 +6,7 @@ import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 const testimonials = [
   {
     name: "Sarah Martinez",
-    program: "Master en Business Administration",
+    program: "Master en Business Administration ",
     university: "Harvard Business School, USA",
     image:
       "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400",
