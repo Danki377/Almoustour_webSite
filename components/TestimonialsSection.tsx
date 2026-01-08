@@ -1,63 +1,69 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
     name: "Sarah Martinez",
     program: "Master en Business Administration",
     university: "Harvard Business School, USA",
-    image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image:
+      "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400",
     rating: 5,
     text: "Grâce à AL MOUSTOUR, j'ai pu intégrer Harvard Business School avec une bourse complète. Leur accompagnement personnalisé et leur expertise ont été déterminants dans ma réussite. Je recommande vivement leurs services !",
-    flag: "🇪🇸"
+    flag: "🇪🇸",
   },
   {
     name: "Ahmed Ben Ali",
     program: "Doctorat en Intelligence Artificielle",
     university: "MIT, USA",
-    image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image:
+      "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
     rating: 5,
     text: "L'équipe d'AL MOUSTOUR m'a accompagné de A à Z dans mon projet d'études au MIT. Leur réseau et leurs conseils m'ont permis d'obtenir un financement complet pour mes recherches. Une expérience exceptionnelle !",
-    flag: "🇹🇳"
+    flag: "🇹🇳",
   },
   {
     name: "Marie Dubois",
     program: "Master en Relations Internationales",
     university: "Sciences Po Paris - Campus International",
-    image: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image:
+      "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=400",
     rating: 5,
     text: "Professionnalisme, écoute et efficacité : AL MOUSTOUR a dépassé toutes mes attentes. Ils m'ont aidée à décrocher une place dans le programme de mes rêves avec une bourse d'excellence.",
-    flag: "🇫🇷"
+    flag: "🇫🇷",
   },
   {
-    name: "David Park",
+    name: "Adama diarra",
     program: "MBA Executive",
     university: "INSEAD, France",
-    image: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image:
+      "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400",
     rating: 5,
     text: "After working with AL MOUSTOUR, I successfully entered INSEAD's MBA program. Their international expertise and personalized approach made all the difference. Highly recommended for ambitious students!",
-    flag: "🇰🇷"
+    flag: "🇰🇷",
   },
   {
-    name: "Fatima Al-Zahra",
+    name: "Fatima Haidara",
     program: "Master en Médecine",
     university: "University of Toronto, Canada",
-    image: "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image:
+      "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=400",
     rating: 5,
     text: "AL MOUSTOUR a transformé mon rêve en réalité. Leur expertise dans les démarches médicales canadiennes et leur soutien constant m'ont permis d'intégrer l'une des meilleures facultés de médecine au monde.",
-    flag: "🇲🇦"
+    flag: "🇲🇦",
   },
   {
-    name: "James Wilson",
+    name: "Moussa coulibaly",
     program: "Ingénieur en Informatique",
     university: "ETH Zurich, Suisse",
-    image: "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image:
+      "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=400",
     rating: 5,
     text: "Thanks to AL MOUSTOUR's guidance, I'm now studying at ETH Zurich with full funding. Their team understood my goals and provided the perfect roadmap to achieve them. Absolutely outstanding service!",
-    flag: "🇬🇧"
-  }
+    flag: "🇬🇧",
+  },
 ];
 
 export function TestimonialsSection() {
@@ -78,7 +84,9 @@ export function TestimonialsSection() {
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
+    );
   };
 
   const goToSlide = (index: number) => {
@@ -86,7 +94,10 @@ export function TestimonialsSection() {
   };
 
   return (
-    <section id="testimonials" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+    <section
+      id="testimonials"
+      className="py-24 bg-gradient-to-br from-gray-50 to-blue-50"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-20">
@@ -94,18 +105,19 @@ export function TestimonialsSection() {
             Ce que disent nos <span className="text-[#00AEEF]">étudiants</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Découvrez les témoignages de nos étudiants qui ont réalisé leurs rêves grâce à notre accompagnement
+            Découvrez les témoignages de nos étudiants qui ont réalisé leurs
+            rêves grâce à notre accompagnement
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-[#00AEEF] to-blue-600 mx-auto mt-8"></div>
         </div>
 
         {/* Testimonial Carousel */}
-        <div 
+        <div
           className="relative overflow-hidden rounded-3xl"
           onMouseEnter={() => setIsAutoPlaying(false)}
           onMouseLeave={() => setIsAutoPlaying(true)}
         >
-          <div 
+          <div
             className="flex transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
@@ -125,13 +137,17 @@ export function TestimonialsSection() {
                       {/* Stars */}
                       <div className="flex justify-center lg:justify-start mb-4">
                         {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} className="text-yellow-400 fill-current" size={20} />
+                          <Star
+                            key={i}
+                            className="text-yellow-400 fill-current"
+                            size={20}
+                          />
                         ))}
                       </div>
 
                       {/* Testimonial Text */}
                       <blockquote className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6 italic">
-                        "{testimonial.text}"
+                        &ldquo;{testimonial.text}&rdquo;
                       </blockquote>
 
                       {/* Author Info */}
@@ -143,11 +159,17 @@ export function TestimonialsSection() {
                         />
                         <div>
                           <div className="flex items-center gap-2">
-                            <h4 className="font-bold text-gray-900 text-lg">{testimonial.name}</h4>
+                            <h4 className="font-bold text-gray-900 text-lg">
+                              {testimonial.name}
+                            </h4>
                             <span className="text-xl">{testimonial.flag}</span>
                           </div>
-                          <p className="text-[#00AEEF] font-semibold">{testimonial.program}</p>
-                          <p className="text-gray-600 text-sm">{testimonial.university}</p>
+                          <p className="text-[#00AEEF] font-semibold">
+                            {testimonial.program}
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            {testimonial.university}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -180,9 +202,9 @@ export function TestimonialsSection() {
               key={index}
               onClick={() => goToSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentIndex 
-                  ? 'bg-[#00AEEF] scale-125' 
-                  : 'bg-gray-300 hover:bg-gray-400'
+                index === currentIndex
+                  ? "bg-[#00AEEF] scale-125"
+                  : "bg-gray-300 hover:bg-gray-400"
               }`}
             />
           ))}
@@ -196,7 +218,11 @@ export function TestimonialsSection() {
               <div className="text-blue-100">Note moyenne</div>
               <div className="flex justify-center mt-2">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="text-yellow-400 fill-current" size={16} />
+                  <Star
+                    key={i}
+                    className="text-yellow-400 fill-current"
+                    size={16}
+                  />
                 ))}
               </div>
             </div>
