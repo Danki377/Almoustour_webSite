@@ -41,7 +41,7 @@ const testimonials = [
     image:
       "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400",
     rating: 5,
-    text: "After working with AL MOUSTOUR, I successfully entered INSEAD's MBA program. Their international expertise and personalized approach made all the difference. Highly recommended for ambitious students!",
+    text: "After working with AL MOUSTOUR, I successfully entered INSEAD's MBA program. Their international expertise and personalized approach made all the difference. Highly recommended for ambitious students !",
     flag: "🇰🇷",
   },
   {
