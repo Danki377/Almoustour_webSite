@@ -35,6 +35,7 @@ export function Navigation() {
   const navLinks = [
     { id: "home", label: "Accueil" },
     { id: "services", label: "Nos Services" },
+    { id: "destinations", label: "Destinations" },
     { id: "about", label: "À Propos" },
     { id: "testimonials", label: "Témoignages" },
   ];
@@ -42,26 +43,25 @@ export function Navigation() {
   return (
     <>
       {/* Top Bar - Hidden on mobile for cleaner look, visible on md+ */}
-      <div className="hidden md:block bg-gradient-to-r from-[#00AEEF] to-[#0077A3] text-white py-2.5 px-4 transition-all duration-300">
-        <div className="max-w-7xl mx-auto flex justify-between items-center text-sm font-medium">
+      <div className="hidden md:block bg-slate-900 text-slate-300 py-2 px-4 transition-all duration-300 border-b border-white/10">
+        <div className="max-w-7xl mx-auto flex justify-between items-center text-xs tracking-wide font-medium">
           <div className="flex items-center gap-6">
-            <a href="tel:+22373711111" className="flex items-center gap-2 hover:text-white/80 transition-colors">
-              <Phone size={14} />
+            <a href="tel:+22373711111" className="flex items-center gap-2 hover:text-white transition-colors duration-200">
+              <Phone size={14} className="text-[#00AEEF]" />
               <span>+223 73 71 11 11</span>
             </a>
-            <a href="mailto:ALMOUSTOURVOYAGE@gmail.com" className="flex items-center gap-2 hover:text-white/80 transition-colors">
-              <Mail size={14} />
+            <a href="mailto:ALMOUSTOURVOYAGE@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors duration-200">
+              <Mail size={14} className="text-[#00AEEF]" />
               <span>ALMOUSTOURVOYAGE@gmail.com</span>
             </a>
           </div>
           <div className="flex items-center gap-4">
-            <span>Votre partenaire de confiance pour l'international</span>
-            <div className="h-4 w-px bg-white/30"></div>
-            <div className="flex gap-3">
-               {/* Social placeholders */}
-               <Facebook size={14} className="cursor-pointer hover:scale-110 transition-transform" />
-               <Instagram size={14} className="cursor-pointer hover:scale-110 transition-transform" />
-               <Twitter size={14} className="cursor-pointer hover:scale-110 transition-transform" />
+            <span className="opacity-80">Votre partenaire de confiance pour l'international</span>
+            <div className="h-4 w-px bg-white/20"></div>
+            <div className="flex gap-4">
+              <Facebook size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
+              <Instagram size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
+              <Twitter size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
             </div>
           </div>
         </div>
@@ -69,11 +69,10 @@ export function Navigation() {
 
       {/* Main Navigation */}
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-white/90 backdrop-blur-md shadow-lg py-2"
-            : "bg-transparent py-4"
-        }`}
+        className={`fixed w-full z-50 transition-all duration-500 ease-in-out ${isScrolled
+          ? "bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-gray-100 py-3"
+          : "bg-transparent py-5"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
@@ -81,29 +80,28 @@ export function Navigation() {
             <div className="flex items-center cursor-pointer group" onClick={() => scrollToSection("home")}>
               <div className="text-2xl font-black tracking-tight text-[#00AEEF]">
                 AL MOUSTOUR
-                <span className={`ml-2 transition-colors duration-300 ${isScrolled ? "text-gray-900" : "text-white drop-shadow-md"}`}>Voyages</span>
+                <span className={`ml-2 transition-colors duration-500 font-bold ${isScrolled ? "text-gray-900" : "text-white drop-shadow-lg"}`}>Voyages</span>
               </div>
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-1">
+            <div className="hidden md:flex items-center space-x-2">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                    isScrolled
-                      ? "text-gray-700 hover:text-[#00AEEF] hover:bg-sky-50"
-                      : "text-white hover:bg-white/20 drop-shadow-sm"
-                  }`}
+                  className={`px-5 py-2.5 rounded-full text-sm font-medium tracking-wide transition-all duration-300 ${isScrolled
+                    ? "text-gray-600 hover:text-[#00AEEF] hover:bg-[#00AEEF]/5"
+                    : "text-white/90 hover:text-white hover:bg-white/10"
+                    }`}
                 >
                   {link.label}
                 </button>
               ))}
-              
+
               <button
                 onClick={() => scrollToSection("contact")}
-                className="ml-4 bg-[#00AEEF] text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-[#008cc2] transition-all duration-300 transform hover:scale-105 shadow-lg group flex items-center gap-2"
+                className="ml-4 bg-[#00AEEF] text-white px-7 py-2.5 rounded-full text-sm font-semibold hover:bg-sky-500 hover:shadow-lg hover:shadow-[#00AEEF]/30 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2 group"
               >
                 Contact
                 <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -113,9 +111,8 @@ export function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(true)}
-              className={`md:hidden p-2 rounded-lg transition-colors duration-200 ${
-                 isScrolled ? "text-gray-900 hover:bg-gray-100" : "text-white hover:bg-white/20"
-              }`}
+              className={`md:hidden p-2 rounded-lg transition-colors duration-200 ${isScrolled ? "text-gray-900 hover:bg-gray-100" : "text-white hover:bg-white/20"
+                }`}
               aria-label="Ouvrir le menu"
             >
               <Menu size={28} />
@@ -125,28 +122,26 @@ export function Navigation() {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div 
-        className={`fixed inset-0 z-[60] md:hidden transition-all duration-300 ${
-          isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
-        }`}
+      <div
+        className={`fixed inset-0 z-[60] md:hidden transition-all duration-300 ${isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
+          }`}
       >
         {/* Backdrop */}
-        <div 
+        <div
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           onClick={() => setIsMenuOpen(false)}
         />
 
         {/* Menu Panel */}
-        <div 
-          className={`absolute top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-out transform ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        <div
+          className={`absolute top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-out transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <div className="flex flex-col h-full">
             {/* Header */}
             <div className="p-6 flex justify-between items-center border-b border-gray-100">
               <span className="text-xl font-black text-[#00AEEF]">MENU</span>
-              <button 
+              <button
                 onClick={() => setIsMenuOpen(false)}
                 className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
@@ -176,11 +171,11 @@ export function Navigation() {
               >
                 Demander un devis
               </button>
-              
+
               <div className="flex justify-center gap-6 pt-2 text-gray-400">
-                 <a href="#" className="hover:text-[#00AEEF] transition-colors"><Facebook size={20} /></a>
-                 <a href="#" className="hover:text-[#00AEEF] transition-colors"><Instagram size={20} /></a>
-                 <a href="#" className="hover:text-[#00AEEF] transition-colors"><Twitter size={20} /></a>
+                <a href="#" className="hover:text-[#00AEEF] transition-colors"><Facebook size={20} /></a>
+                <a href="#" className="hover:text-[#00AEEF] transition-colors"><Instagram size={20} /></a>
+                <a href="#" className="hover:text-[#00AEEF] transition-colors"><Twitter size={20} /></a>
               </div>
             </div>
           </div>

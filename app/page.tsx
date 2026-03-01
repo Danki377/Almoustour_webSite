@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
 import { ServicesSection } from '@/components/ServicesSection';
+import { DestinationsSection } from '@/components/DestinationsSection';
 import { AboutSection } from '@/components/AboutSection';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { ContactSection } from '@/components/ContactSection';
@@ -19,6 +20,7 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <ServicesSection />
+      <DestinationsSection />
       <AboutSection />
       <TestimonialsSection />
       <ContactSection />
