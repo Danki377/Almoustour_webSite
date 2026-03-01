@@ -1,8 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -97,6 +97,8 @@ export default function RootLayout({
         />
         <link rel="icon" href="/almoustour logo.png" />
       </head>
+      <Analytics />
+      <SpeedInsights />
       <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
