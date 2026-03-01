@@ -150,15 +150,12 @@ export function DestinationsSection() {
     };
 
     return (
-        <section id="destinations" className="py-24 bg-slate-950 relative overflow-hidden">
-            {/* Decorative bg */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,174,239,0.08)_0%,_transparent_60%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(0,119,163,0.06)_0%,_transparent_60%)]" />
+        <section id="destinations" className="py-24 bg-[#0B1120] relative border-t border-slate-800">
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center gap-2 bg-[#00AEEF]/10 border border-[#00AEEF]/30 rounded-full px-4 py-1.5 mb-6">
+                    <div className="inline-flex items-center gap-2 bg-[#00AEEF]/10 border border-[#00AEEF]/30 rounded-lg px-4 py-1.5 mb-6">
                         <Globe2 className="text-[#00AEEF]" size={16} />
                         <span className="text-[#00AEEF] text-sm font-semibold tracking-wide">8 Destinations</span>
                     </div>
@@ -168,7 +165,7 @@ export function DestinationsSection() {
                     <p className="text-slate-400 text-xl max-w-2xl mx-auto">
                         Choisissez votre pays d'étude et contactez nos conseillers pour recevoir une orientation personnalisée.
                     </p>
-                    <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-full px-5 py-2 mt-6">
+                    <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-lg px-5 py-2 mt-6">
                         <Shield size={16} className="text-green-400" />
                         <span className="text-green-300 text-sm font-semibold">Bourses disponibles : Chine, Russie, Turquie & Maroc</span>
                     </div>
@@ -179,7 +176,7 @@ export function DestinationsSection() {
                     {destinations.map((dest, index) => (
                         <div
                             key={index}
-                            className="group relative bg-slate-900/80 backdrop-blur-sm border border-slate-800 hover:border-[#00AEEF]/50 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-[#00AEEF]/10 hover:-translate-y-1 flex flex-col"
+                            className="group relative bg-slate-900 border border-slate-800 hover:border-[#00AEEF]/30 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-black/50 flex flex-col"
                         >
                             {/* Top Gradient Bar */}
                             <div className={`h-1.5 w-full bg-gradient-to-r ${dest.emoji_bg}`} />
@@ -191,7 +188,7 @@ export function DestinationsSection() {
                                         <span className="text-4xl">{dest.flag}</span>
                                         <div>
                                             <h3 className="text-xl font-bold text-white">{dest.country}</h3>
-                                            <span className={`text-xs font-bold text-white px-2 py-0.5 rounded-full ${dest.badgeColor}`}>
+                                            <span className={`text-xs font-bold text-white px-2 py-0.5 rounded-lg ${dest.badgeColor}`}>
                                                 {dest.badge}
                                             </span>
                                         </div>
@@ -228,39 +225,31 @@ export function DestinationsSection() {
                                 {/* CTA */}
                                 <button
                                     onClick={() => openWhatsApp(dest.waMsg)}
-                                    className="relative w-full mt-2 overflow-hidden group/btn rounded-2xl"
+                                    className="relative w-full mt-2 bg-green-500 hover:bg-green-600 text-white flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl transition-all font-bold text-sm tracking-wide"
                                 >
-                                    {/* Glow layer */}
-                                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#25D366] to-[#128C7E] opacity-100" />
-                                    {/* Shimmer sweep */}
-                                    <div className="absolute inset-0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                                    {/* Content */}
-                                    <div className="relative flex items-center justify-center gap-2.5 py-3.5 px-4">
-                                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white flex-shrink-0">
-                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                                        </svg>
-                                        <span className="text-white font-bold text-sm tracking-wide">Demander via WhatsApp</span>
-                                        <ArrowRight size={14} className="text-white group-hover/btn:translate-x-1 transition-transform" />
-                                    </div>
+                                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white flex-shrink-0">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
+                                    Demander via WhatsApp
+                                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                                 </button>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Bottom CTA */}
                 <div className="mt-16 text-center">
-                    <div className="inline-block bg-slate-900/60 backdrop-blur-sm border border-slate-700 rounded-3xl p-8 max-w-2xl">
+                    <div className="inline-block bg-slate-900/60 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 max-w-2xl">
                         <h3 className="text-2xl font-bold text-white mb-3">Votre filière n'est pas listée ?</h3>
                         <p className="text-slate-400 mb-6">
                             Nous couvrons des dizaines de filières : médecine, droit, informatique, architecture, pharmacie, ingénierie et bien d'autres. Contactez-nous pour une orientation personnalisée.
                         </p>
                         <button
                             onClick={() => openWhatsApp("Bonjour Al-Moustour, je voudrais me renseigner sur les filières disponibles pour mes études à l'étranger.")}
-                            className="relative inline-flex overflow-hidden rounded-full group/cbtn"
+                            className="relative inline-flex overflow-hidden rounded-xl group/cbtn"
                         >
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#25D366] via-[#1ebd5a] to-[#128C7E]" />
-                            <div className="absolute inset-0 rounded-full translate-x-[-100%] group-hover/cbtn:translate-x-[100%] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+                            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#25D366] via-[#1ebd5a] to-[#128C7E]" />
+                            <div className="absolute inset-0 rounded-xl translate-x-[-100%] group-hover/cbtn:translate-x-[100%] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
                             <span className="relative flex items-center gap-3 px-10 py-4 font-bold text-white tracking-wide">
                                 <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white flex-shrink-0">
                                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />

@@ -24,11 +24,11 @@ const botResponses = [
   },
   {
     triggers: ["france", "campus france", "français"],
-    response: "🇫🇷 **Études en France**\n• Procédure Campus France (gratuite)\n• Frais proc. publique : 250 000 FCFA\n• Frais proc. privée : 750 000 FCFA\n• Frais agence : 650 000 FCFA (après visa)\n• Taux de réussite : **90%**\n• Compte bloqué : 5 000 000 FCFA (remboursable)\n\nVous souhaitez commencer ?",
+    response: "🇫🇷 **Études en France**\n• Procédure Campus France (gratuite)\n• Frais proc. publique : 250 000 FCFA\n• Frais proc. privée : 750 000 FCFA\n• Frais agence : 650 000 FCFA\n• Taux de réussite : **90%**\n• Compte bloqué : 5 000 000 FCFA (remboursable)\n\nVous souhaitez commencer ?",
   },
   {
     triggers: ["canada", "canadien", "québec"],
-    response: "🇨🇦 **Études au Canada**\n• Collèges : 5 000 000 FCFA/an\n• Frais procédures : 400 000 FCFA\n• Frais agence : 850 000 FCFA (après visa)\n• Logement : ~250 000 FCFA/mois\n• Taux de réussite : 65%\n\nNos experts maximisent vos chances avec un dossier solide !",
+    response: "🇨🇦 **Études au Canada**\n• Collèges : 5 000 000 FCFA/an\n• Frais procédures : 400 000 FCFA\n• Frais agence : 850 000 FCFA\n• Logement : ~250 000 FCFA/mois\n• Taux de réussite : 65%\n\nNos experts maximisent vos chances avec un dossier solide !",
   },
   {
     triggers: ["maroc", "morocco"],

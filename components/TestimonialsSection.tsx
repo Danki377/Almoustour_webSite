@@ -49,11 +49,9 @@ export function TestimonialsSection() {
   return (
     <section
       id="testimonials"
-      className="py-24 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden"
+      className="py-24 bg-white border-t border-slate-100"
     >
-      {/* Decorative blobs */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00AEEF]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
@@ -78,7 +76,7 @@ export function TestimonialsSection() {
             <div className="flex gap-6 items-stretch animate-marquee whitespace-normal min-w-max">
               {[...testimonials, ...testimonials].map((testimonial, index) => (
                 <div key={index} className="w-[300px] md:w-[450px] flex-none">
-                  <div className="bg-white/80 backdrop-blur-sm rounded-[2rem] p-8 h-full shadow-lg hover:shadow-xl border border-white/50 transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden group/card flex flex-col">
+                  <div className="bg-slate-50 rounded-2xl p-8 h-full shadow-sm hover:shadow-md border border-slate-100 transition-all duration-300 relative overflow-hidden group/card flex flex-col">
                     {/* Quotation shape in background */}
                     <Quote className="absolute right-4 top-4 text-blue-50 opacity-50 scale-[3] transform rotate-12 transition-transform group-hover/card:scale-[4] duration-500" />
 
@@ -139,7 +137,7 @@ export function TestimonialsSection() {
         `}} />
 
         {/* Stats */}
-        <div className="mt-20 bg-gradient-to-r from-[#00AEEF] to-blue-600 rounded-3xl p-12 text-white text-center">
+        <div className="mt-20 bg-slate-900 border border-slate-800 rounded-2xl p-12 text-white text-center">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="text-4xl font-bold mb-2">4.9/5</div>

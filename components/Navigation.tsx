@@ -70,7 +70,7 @@ export function Navigation() {
       {/* Main Navigation */}
       <nav
         className={`fixed w-full z-50 transition-all duration-500 ease-in-out ${isScrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-gray-100 py-3"
+          ? "bg-white shadow-xl shadow-slate-200/50 border-b border-gray-100 py-3"
           : "bg-transparent py-5"
           }`}
       >
@@ -90,9 +90,9 @@ export function Navigation() {
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className={`px-5 py-2.5 rounded-full text-sm font-medium tracking-wide transition-all duration-300 ${isScrolled
-                    ? "text-gray-600 hover:text-[#00AEEF] hover:bg-[#00AEEF]/5"
-                    : "text-white/90 hover:text-white hover:bg-white/10"
+                  className={`px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wide transition-all duration-300 ${isScrolled
+                    ? "text-slate-600 hover:text-[#00AEEF]"
+                    : "text-white/90 hover:text-white"
                     }`}
                 >
                   {link.label}
@@ -101,7 +101,7 @@ export function Navigation() {
 
               <button
                 onClick={() => scrollToSection("contact")}
-                className="ml-4 bg-[#00AEEF] text-white px-7 py-2.5 rounded-full text-sm font-semibold hover:bg-sky-500 hover:shadow-lg hover:shadow-[#00AEEF]/30 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2 group"
+                className="ml-4 bg-[#00AEEF] text-white px-7 py-2.5 rounded-xl text-sm font-semibold hover:bg-sky-500 hover:shadow-lg hover:shadow-[#00AEEF]/30 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2 group"
               >
                 Contact
                 <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -123,60 +123,70 @@ export function Navigation() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-[60] md:hidden transition-all duration-300 ${isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
+        className={`fixed inset-0 z-[60] md:hidden transition-all duration-500 ${isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
           }`}
       >
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          className="absolute inset-0 bg-slate-900/40 backdrop-blur-md"
           onClick={() => setIsMenuOpen(false)}
         />
 
         {/* Menu Panel */}
         <div
-          className={`absolute top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-out transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+          className={`absolute top-0 right-0 h-full w-[85%] max-w-sm bg-white/90 backdrop-blur-2xl shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+            } border-l border-white/20`}
         >
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full bg-gradient-to-b from-white/50 to-slate-50/80">
             {/* Header */}
-            <div className="p-6 flex justify-between items-center border-b border-gray-100">
-              <span className="text-xl font-black text-[#00AEEF]">MENU</span>
+            <div className="p-6 flex justify-between items-center border-b border-slate-200/50">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-[#00AEEF] rounded-lg rotate-3" />
+                <span className="text-xl font-black text-slate-900 tracking-tighter">AL MOUSTOUR</span>
+              </div>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors"
+                aria-label="Fermer le menu"
               >
                 <X size={24} />
               </button>
             </div>
 
             {/* Links */}
-            <div className="flex-1 overflow-y-auto py-6 px-6 space-y-2">
+            <div className="flex-1 overflow-y-auto py-8 px-6 space-y-3">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className="w-full text-left px-4 py-4 text-lg font-medium text-gray-700 hover:text-[#00AEEF] hover:bg-sky-50 rounded-xl transition-all duration-200 flex justify-between items-center group"
+                  className="w-full text-left px-5 py-4 text-lg font-bold text-slate-700 hover:text-[#00AEEF] hover:bg-white rounded-xl transition-all duration-300 flex justify-between items-center group shadow-sm border border-transparent hover:border-sky-100 hover:shadow-md"
                 >
-                  {link.label}
-                  <ChevronRight size={20} className="text-gray-300 group-hover:text-[#00AEEF] transition-colors" />
+                  <span className="flex items-center gap-4">
+                    <span className="w-1.5 h-6 bg-[#00AEEF]/20 rounded-full group-hover:bg-[#00AEEF] transition-colors" />
+                    {link.label}
+                  </span>
+                  <ChevronRight size={18} className="text-slate-300 group-hover:text-[#00AEEF] group-hover:translate-x-1 transition-all" />
                 </button>
               ))}
             </div>
 
             {/* Footer Actions */}
-            <div className="p-6 border-t border-gray-100 space-y-4 bg-gray-50">
+            <div className="p-8 border-t border-slate-200/50 space-y-5">
               <button
                 onClick={() => scrollToSection("contact")}
-                className="w-full bg-[#00AEEF] text-white px-6 py-4 rounded-xl text-lg font-bold hover:bg-[#008cc2] transition-all duration-300 shadow-lg text-center"
+                className="w-full bg-[#00AEEF] text-white px-6 py-5 rounded-xl text-lg font-black hover:bg-[#008cc2] active:scale-95 transition-all duration-300 shadow-xl shadow-[#00AEEF]/20 flex items-center justify-center gap-3"
               >
-                Demander un devis
+                <Phone size={20} />
+                Contactez-nous
               </button>
 
-              <div className="flex justify-center gap-6 pt-2 text-gray-400">
-                <a href="#" className="hover:text-[#00AEEF] transition-colors"><Facebook size={20} /></a>
-                <a href="#" className="hover:text-[#00AEEF] transition-colors"><Instagram size={20} /></a>
-                <a href="#" className="hover:text-[#00AEEF] transition-colors"><Twitter size={20} /></a>
+              <div className="flex justify-center gap-8 pt-2 text-slate-400">
+                <a href="https://www.facebook.com/agencedevoyagemali" target="_blank" rel="noreferrer" className="hover:text-[#00AEEF] transition-colors transform hover:scale-110"><Facebook size={24} /></a>
+                <a href="#" className="hover:text-[#00AEEF] transition-colors transform hover:scale-110"><Instagram size={24} /></a>
+                <a href="#" className="hover:text-[#00AEEF] transition-colors transform hover:scale-110"><Twitter size={24} /></a>
               </div>
+
+              <p className="text-center text-[10px] uppercase tracking-widest text-slate-400 font-bold">Votre partenaire voyage au Mali</p>
             </div>
           </div>
         </div>
