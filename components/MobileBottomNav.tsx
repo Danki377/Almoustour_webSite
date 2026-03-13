@@ -10,7 +10,7 @@ export function MobileBottomNav() {
     const navItems = [
         { id: "home", label: "Accueil", icon: Home },
         { id: "services", label: "Services", icon: Briefcase },
-        { id: "destinations", label: "Destins.", icon: Compass },
+
         { id: "contact", label: "Contact", icon: Phone },
     ];
 

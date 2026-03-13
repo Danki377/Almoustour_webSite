@@ -3,9 +3,10 @@
 import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
 import { ServicesSection } from '@/components/ServicesSection';
-import { DestinationsSection } from '@/components/DestinationsSection';
+
 import { AboutSection } from '@/components/AboutSection';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
+import FAQWithSpiral from '@/components/ui/faq-section';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
@@ -16,9 +17,10 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <ServicesSection />
-      <DestinationsSection />
+
       <AboutSection />
       <TestimonialsSection />
+      <FAQWithSpiral />
       <ContactSection />
       <Footer />
       <WhatsAppButton />

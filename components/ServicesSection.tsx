@@ -1,171 +1,161 @@
 "use client";
 
-import {
-  Plane,
-  GraduationCap,
-  HeadphonesIcon,
-  MapPin,
-  Award,
-  Users,
-  Handshake,
-  Shield,
-} from "lucide-react";
+import { Plane, GraduationCap, MapPin, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const WA_NUMBER = "22373711111";
 
 const services = [
   {
     icon: Plane,
+    tag: "Voyage",
     title: "Billetterie d'Avion",
     description:
-      "Réservez vos vols au meilleur prix depuis Bamako vers toutes les destinations. Tarifs compétitifs, assistance complète pour votre départ.",
-    features: [
-      "Meilleures offres du marché",
-      "Comparaison compagnies",
-      "Assistance à la réservation",
-      "Billets étudiants réduits",
-    ],
-    color: "from-sky-500 to-cyan-400",
-    waMsg: "Bonjour Al-Moustour, je souhaite réserver un billet d'avion. Pouvez-vous m'aider ?",
+      "Billets d'avion vers le monde entier — Europe, Amériques, Asie, Afrique, Moyen-Orient. Nous comparons les meilleures offres pour vous garantir le meilleur tarif.",
+    details: ["Europe, Amériques, Asie, Afrique, Moyen-Orient", "Tarifs compétitifs & billets étudiants", "Réponse rapide sur WhatsApp"],
+    slug: "billetterie",
+    accent: "bg-sky-500",
   },
   {
     icon: GraduationCap,
+    tag: "Éducation",
     title: "Accompagnement Étudiant",
     description:
-      "De l'inscription universitaire à l'obtention du visa, nous gérons tout votre dossier. Taux de réussite jusqu'à 100% selon la destination.",
-    features: [
-      "Choix de l'université",
-      "Montage du dossier",
-      "Préparation à l'interview visa",
-      "Suivi tout au long du cycle",
-    ],
-    color: "from-blue-500 to-indigo-400",
-    waMsg: "Bonjour Al-Moustour, je souhaite être accompagné pour mes études à l'étranger.",
+      "De l'université au visa, nous gérons tout votre dossier. France, Canada, Turquie, Chine, Russie, Maroc, Inde, USA.",
+    details: ["Choix université & dossier", "Préparation visa", "Suivi tout au long du cycle"],
+    slug: "accompagnement-etudiant",
+    accent: "bg-indigo-500",
   },
   {
     icon: MapPin,
-    title: "Visa & Immigration",
+    tag: "Administratif",
+    title: "Assistance Visa",
     description:
-      "Préparation experte de votre dossier de visa pour maximiser vos chances. Chine, Russie, Turquie, Maroc — garantie 100% sur les bourses.",
-    features: [
-      "Dossier visa complet",
-      "France (COPACO)",
-      "Canada (immigration.ca)",
-      "USA (visa F-1)",
-    ],
-    color: "from-purple-500 to-violet-400",
-    waMsg: "Bonjour Al-Moustour, j'ai besoin d'aide pour ma demande de visa étudiant.",
+      "Rendez-vous consulaires et montage de dossiers pour 12+ pays. Délais rapides, tarifs transparents, sans mauvaises surprises.",
+    details: ["Allemagne, Canada, USA, Dubai…", "Tarifs officiels", "Délais garantis"],
+    slug: "visa-et-immigration",
+    accent: "bg-violet-500",
   },
-  {
-    icon: HeadphonesIcon,
-    title: "Assistance Continue",
-    description:
-      "Nous sommes à vos côtés avant, pendant et après votre départ. Accueil à l'arrivée, aide pour le logement et les documents de séjour.",
-    features: [
-      "Accueil à l'arrivée",
-      "Aide au logement",
-      "Documents de séjour",
-      "Support tout au long du cycle",
-    ],
-    color: "from-orange-500 to-amber-400",
-    waMsg: "Bonjour Al-Moustour, j'ai besoin d'assistance pour mon installation à l'étranger.",
-  },
-];
-
-const additionalServices = [
-  { icon: Users, title: "Orientation Académique", description: "Aide au choix de filière et d'université selon votre profil" },
-  { icon: Award, title: "Bourses d'Études", description: "Accès aux bourses en Chine, Russie, Turquie et Maroc" },
-  { icon: Handshake, title: "Facilités de Paiement", description: "Des modalités de paiement flexibles adaptées à votre situation" },
-  { icon: Shield, title: "Assistance à l'arrivée", description: "Accueil dans le pays, aide à l'installation" },
 ];
 
 export function ServicesSection() {
-  const openWhatsApp = (msg: string) => {
-    window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+  const handleWhatsAppGeneral = () => {
+    window.open(
+      `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjour Al-Moustour, j'ai une question spécifique concernant vos services.")}`,
+      "_blank"
+    );
   };
 
   return (
-    <section id="services" className="py-24 bg-white border-t border-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5">
-            Nos <span className="text-[#00AEEF]">Services</span>
-          </h2>
-          <p className="text-xl text-gray-500 max-w-3xl mx-auto">
-            Tout ce dont vous avez besoin pour réussir votre projet d'études à l'international.
-          </p>
+    <section id="services" className="py-32 bg-white relative overflow-hidden">
+      {/* Decorative Background Text — Luxury Editorial Feel */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 select-none pointer-events-none opacity-[0.02]">
+        <span className="text-[25vw] font-black tracking-tighter leading-none">
+          SERVICES
+        </span>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        {/* Section Header — Refined & Bold */}
+        <div className="mb-20">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="max-w-xl">
+              <span className="inline-block text-[#00AEEF] text-xs font-black uppercase tracking-[0.3em] mb-4">
+                Nos Expertises
+              </span>
+              <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-none mb-6">
+                Des Solutions <br /> Sur Mesure.
+              </h2>
+            </div>
+            <p className="text-slate-500 max-w-sm text-base md:text-lg leading-relaxed border-l-2 border-slate-100 pl-6 py-2">
+              Voyages, études ou visas — nous transformons vos projets internationaux en réalités concrètes et sécurisées.
+            </p>
+          </div>
         </div>
 
-        {/* Main Services Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        {/* Cards Grid — Custom Pro Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {services.map((service, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 flex flex-col"
+              className="group flex flex-col bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-[2rem] overflow-hidden hover:border-[#00AEEF]/40 hover:shadow-[0_20px_50px_rgba(0,174,239,0.08)] transition-all duration-500"
             >
-              <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${service.color} rounded-xl mb-6 shadow-lg shadow-slate-200`}>
-                <service.icon className="text-white" size={28} />
+              {/* Top accent bar */}
+              <div className={`h-1 w-full ${service.accent}`} />
+
+              <div className="p-10 flex flex-col flex-1 relative">
+                {/* Numeric Indicator — Subtle Luxury Detail */}
+                <span className="absolute top-10 right-10 text-5xl font-black text-slate-50 italic opacity-[0.05] group-hover:opacity-10 transition-opacity">
+                  0{index + 1}
+                </span>
+
+                {/* Icon row */}
+                <div className="mb-10 text-[#00AEEF] bg-[#00AEEF]/5 w-14 h-14 rounded-2xl flex items-center justify-center group-hover:bg-[#00AEEF] group-hover:text-white transition-all duration-500 transform group-hover:rotate-6">
+                  <service.icon
+                    size={28}
+                    strokeWidth={1.5}
+                  />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
+                  {service.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-slate-500 leading-relaxed mb-8 flex-1">
+                  {service.description}
+                </p>
+
+                {/* Details list — More refined */}
+                <ul className="space-y-3 mb-10">
+                  {service.details.map((d, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm text-slate-600 font-semibold group/item">
+                      <div className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover/item:bg-[#00AEEF] transition-colors" />
+                      {d}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA Button */}
+                <Link
+                  href={`/services/${service.slug}`}
+                  className="mt-auto relative overflow-hidden group/btn w-full flex items-center justify-center gap-2 bg-slate-900 text-white font-bold py-4 rounded-2xl text-sm transition-all duration-300 hover:bg-[#00AEEF] hover:shadow-xl hover:shadow-[#00AEEF]/20 active:scale-95"
+                >
+                  {/* Shine effect on hover */}
+                  <div className="absolute inset-0 w-1/2 h-full bg-white/10 skew-x-[-25deg] -translate-x-full group-hover/btn:animate-[shine_0.75s_ease-in-out]" />
+                  
+                  En savoir plus
+                  <ArrowRight size={15} className="group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#00AEEF] transition-colors duration-300">
-                {service.title}
-              </h3>
-              <p className="text-gray-500 mb-6 leading-relaxed">{service.description}</p>
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                {service.features.map((feature, fi) => (
-                  <div key={fi} className="flex items-center text-sm text-gray-500">
-                    <div className="w-2 h-2 bg-[#00AEEF] rounded-full mr-2 opacity-70" />
-                    {feature}
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={() => openWhatsApp(service.waMsg)}
-                className="mt-auto w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebd5a] text-white font-bold py-3.5 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-md shadow-green-500/20"
-              >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white flex-shrink-0">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-                Demander ce service
-              </button>
             </div>
           ))}
         </div>
 
-        {/* Additional Services */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 mb-12">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
-            Services <span className="text-[#00AEEF]">Complémentaires</span>
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {additionalServices.map((service, index) => (
-              <div key={index} className="text-center group border border-slate-100 rounded-xl p-6 transition-all duration-300 hover:bg-slate-50 hover:border-slate-200">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-900 rounded-xl mb-4">
-                  <service.icon className="text-white" size={20} />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">{service.title}</h4>
-                <p className="text-sm text-gray-500">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Bottom CTA — Direct Link */}
+        <div className="mt-16 bg-slate-950 rounded-[2.5rem] p-12 md:p-16 text-center relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#00AEEF]/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
 
-        {/* Bottom CTA */}
-        <div className="bg-slate-950 rounded-2xl p-10 text-white text-center shadow-2xl">
-          <h3 className="text-3xl font-extrabold mb-3">Prêt à démarrer votre projet ?</h3>
-          <p className="text-slate-400 mb-8 text-lg">
-            Parlez directement à un conseiller sur WhatsApp. Réponse rapide garantie.
-          </p>
-          <button
-            onClick={() => openWhatsApp("Bonjour Al-Moustour ! Je souhaite me renseigner sur vos services pour étudier à l'étranger.")}
-            className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-4 rounded-xl font-bold hover:bg-[#1ebd5a] transition-all duration-300 transform hover:scale-105 shadow-xl shadow-green-600/30 text-lg"
-          >
-            <svg viewBox="0 0 24 24" className="w-6 h-6 fill-white">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-            </svg>
-            Nous contacter sur WhatsApp
-          </button>
+          <div className="relative z-10">
+            <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-4">
+              Une question spécifique ?
+            </h3>
+            <p className="text-slate-400 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed font-light">
+              Nos conseillers sont à votre disposition pour vous guider personnellement dans votre projet.
+            </p>
+            <button
+              onClick={handleWhatsAppGeneral}
+              className="relative overflow-hidden group inline-flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white font-black px-12 py-5 rounded-2xl text-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-2xl shadow-green-600/30 ring-4 ring-white/5 hover:ring-green-400/30"
+            >
+              {/* Shine effect */}
+              <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-[-25deg] -translate-x-full group-hover:animate-[shine_0.75s_ease-in-out]" />
+              
+              Discutez avec nous
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

@@ -1,180 +1,175 @@
 "use client";
 
-import { Target, Heart, Users, TrendingUp, Globe, Shield, Award } from "lucide-react";
+import { Shield, Award, Users, Check, Globe, Sparkles, Target } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
 
 export function AboutSection() {
-  const values = [
-    {
-      icon: Heart,
-      title: "Confiance",
-      description: "Assistance à l'arrivée dans le pays d'accueil et aide à l'installation. Transparence totale sur chaque étape de votre projet.",
-    },
-    {
-      icon: Users,
-      title: "Accompagnement",
-      description: "Un suivi personnalisé de A à Z — du choix de l'université à l'installation dans le pays d'accueil.",
-    },
-    {
-      icon: Award,
-      title: "Réussite",
-      description: "Bourses garanties à 100% pour la Chine, la Russie, le Maroc et la Turquie. Plus de 500 étudiants satisfaits de nos services.",
-    },
+  const stats = [
+    { target: 8, suffix: "+", label: "Années d'expérience" },
+    { target: 500, suffix: "+", label: "Clients accompagnés" },
+    { target: 100, suffix: "%", label: "Transparence totale" },
+    { target: 6, suffix: "j/7", label: "Disponibilité" },
   ];
 
-  const stats = [
-    { number: "8+", label: "Années d'expérience" },
-    { number: "500+", label: "Étudiants accompagnés" },
-    { number: "8", label: "Pays partenaires" },
-    { number: "90%+", label: "Taux de satisfaction" },
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [counts, setCounts] = useState([0, 0, 0, 0]);
+  const [animated, setAnimated] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !animated) {
+          setAnimated(true);
+          stats.forEach((stat, i) => {
+            const duration = 1500;
+            const steps = 60;
+            const timer = setInterval(() => {
+              let step = 0;
+              const interval = setInterval(() => {
+                step++;
+                const progress = step / steps;
+                const eased = 1 - Math.pow(1 - progress, 4);
+                const current = Math.round(eased * stat.target);
+
+                setCounts(prev => {
+                  const next = [...prev];
+                  next[i] = current;
+                  return next;
+                });
+
+                if (step >= steps) {
+                  clearInterval(interval);
+                  clearInterval(timer);
+                }
+              }, duration / steps);
+            }, 0);
+          });
+        }
+      },
+      { threshold: 0.2 }
+    );
+    if (statsRef.current) observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, [animated]);
+
+  const qualities = [
+    {
+      icon: Target,
+      title: "Vision & Clarté",
+      desc: "Nous ne vendons pas seulement des services, nous construisons des parcours de vie sécurisés vers l'international."
+    },
+    {
+      icon: Sparkles,
+      title: "Excellence Opérationnelle",
+      desc: "Chaque dossier est traité avec une rigueur absolue, garantissant des taux de réussite inégalés sur le marché."
+    },
+    {
+      icon: Shield,
+      title: "Éthique Professionnelle",
+      desc: "La transparence est notre pilier. Aucun frais caché, aucune promesse non tenue. La confiance avant tout."
+    }
   ];
 
   return (
-    <section id="about" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5">
-            À Propos d&#39;<span className="text-[#00AEEF]">Al Moustour</span> Voyages
-          </h2>
-          <div className="w-20 h-1.5 bg-gradient-to-r from-[#00AEEF] to-blue-600 mx-auto mb-8 rounded-full" />
+    <section id="about" className="py-32 bg-slate-50 relative overflow-hidden">
+      {/* Decorative luxury circles */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sky-50 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2 opacity-50" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-slate-100 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 opacity-30" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        {/* Editorial Layout Header */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24 items-end">
+          <div className="lg:col-span-8">
+            <span className="inline-block text-[#00AEEF] text-xs font-black uppercase tracking-[0.3em] mb-6">
+              Héritage & Valeurs
+            </span>
+            <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-[0.9] mb-0">
+              Plus qu'une Agence, <br />
+              <span className="text-[#00AEEF]">Votre Allié Stratégique.</span>
+            </h2>
+          </div>
+          <div className="lg:col-span-4 pb-2">
+            <p className="text-slate-500 text-lg leading-relaxed font-medium border-l-4 border-[#00AEEF] pl-6 py-2">
+              Depuis 2016, Al Moustour Voyages redéfinit les standards de l'accompagnement vers l'international à Bamako.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-          {/* Content */}
-          <div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">
-              Votre partenaire de confiance pour réaliser vos rêves d&#39;études à l&#39;étranger
-            </h3>
-
-            <p className="text-lg text-gray-600 mb-5 leading-relaxed">
-              Depuis plus de <strong>8 ans</strong>, Al Moustour Voyages accompagne les étudiants maliens ambitieux dans leur projet d&#39;études à l&#39;étranger — Chine, Russie, Turquie, Maroc, France, Canada, Inde et États-Unis.
-            </p>
-
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Plus d&#39;une centaine d&#39;étudiants affirment tous avoir été satisfaits, au-delà de leurs attentes. Nous savons combien votre projet est important — c&#39;est pourquoi nous mettons toutes les chances de votre côté.
-            </p>
-
-            {/* Mission */}
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 mb-6">
-              <div className="flex items-center mb-4">
-                <div className="w-9 h-9 bg-[#00AEEF] rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                  <Target className="text-white" size={18} />
-                </div>
-                <h4 className="text-xl font-bold text-gray-900">Notre Rôle</h4>
-              </div>
-              <ul className="space-y-2 text-gray-600">
-                {[
-                  "Inscription dans les meilleures universités privées ou bourses partielles",
-                  "Montage de dossier minutieusement préparé",
-                  "Demande et suivi du visa étudiant",
-                  "Accueil à l'arrivée et assistance à l'installation",
-                  "Suivi et assistance tout au long du cycle d'études",
-                ].map((point, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-[#00AEEF] mt-2.5 flex-shrink-0" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
+        {/* Content Blocks */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-24">
+          {/* Left Block — Story */}
+          <div className="space-y-8">
+            <div className="prose prose-slate prose-lg max-w-none">
+              <p className="text-slate-600 text-xl leading-loose font-light">
+                Fondée sur une volonté de <span className="text-slate-900 font-bold italic">transparence radicale</span>, notre agence s'est imposée comme le choix numéro un des familles et professionnels exigeants au Mali.
+              </p>
+              <p className="text-slate-600 text-lg leading-relaxed">
+                Nous ne nous contentons pas de remplir des formulaires. Nous analysons chaque cas de manière unique pour maximiser les chances de succès, que ce soit pour une <span className="text-slate-900 font-semibold underline decoration-[#00AEEF]/30">admission universitaire de prestige</span> ou un projet de voyage complexe.
+              </p>
             </div>
 
-            {/* Key Trust Badge */}
-            <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-xl p-5">
-              <Shield className="text-green-600 mt-0.5 flex-shrink-0" size={22} />
-              <div>
-                <h5 className="font-bold text-green-800 mb-1">Notre engagement unique</h5>
-                <p className="text-green-700 text-sm">
-                  Accompagnement sérieux et professionnel, suivi personnalisé tout au long de votre parcours d&#39;études. Toutes nos inscriptions sont encadrées par nos conseillers.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Visual side */}
-          <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-800 p-8">
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { flag: "🇫🇷", country: "France", rate: "90%" },
-                  { flag: "🇨🇳", country: "Chine", rate: "100%" },
-                  { flag: "🇲🇦", country: "Maroc", rate: "100%" },
-                  { flag: "🇹🇷", country: "Turquie", rate: "87%" },
-                  { flag: "🇷🇺", country: "Russie", rate: "100%" },
-                  { flag: "🇨🇦", country: "Canada", rate: "65%" },
-                  { flag: "🇮🇳", country: "Inde", rate: "95%" },
-                  { flag: "🇺🇸", country: "USA", rate: "80%" },
-                ].map((d, i) => (
-                  <div key={i} className="bg-slate-800/50 border border-white/5 rounded-xl p-4 hover:bg-slate-800 transition-all">
-                    <span className="text-3xl">{d.flag}</span>
-                    <div className="mt-2 text-white font-semibold text-sm">{d.country}</div>
-                    <div className="text-[#00AEEF] font-bold text-xs uppercase tracking-tighter">Réussite {d.rate}</div>
+            <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                "Disponibilité Totale",
+                "Expertise Consulaire",
+                "Suivi Post-Arrivée",
+                "Réseau International"
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <div className="w-6 h-6 rounded-full bg-[#00AEEF]/10 flex items-center justify-center">
+                    <Check size={14} className="text-[#00AEEF]" strokeWidth={3} />
                   </div>
-                ))}
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent pointer-events-none" />
-              <div className="relative text-center mt-4">
-                <p className="text-white/60 text-sm">8 destinations disponibles</p>
-              </div>
-            </div>
-
-            {/* Floating badges */}
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-xl p-5 shadow-xl border border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 bg-gradient-to-br from-[#00AEEF] to-blue-600 rounded-xl flex items-center justify-center">
-                  <Globe className="text-white" size={22} />
+                  <span className="text-slate-700 font-bold text-sm tracking-tight">{item}</span>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">8 Pays</div>
-                  <div className="text-sm text-gray-500">Destinations</div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute -top-6 -right-6 bg-white rounded-xl p-5 shadow-xl border border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                  <Shield className="text-white" size={22} />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">100%</div>
-                  <div className="text-sm text-gray-500">Garanti sur bourses</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* Values */}
-        <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Nos <span className="text-[#00AEEF]">Valeurs</span>
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {values.map((value, index) => (
-              <div key={index} className="text-center group hover:bg-gradient-to-br hover:from-[#00AEEF]/5 hover:to-blue-600/5 rounded-2xl p-8 transition-all duration-300 border border-transparent hover:border-[#00AEEF]/10">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#00AEEF] to-blue-600 rounded-xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
-                  <value.icon className="text-white" size={28} />
+          {/* Right Block — Premium Values */}
+          <div className="space-y-6">
+            {qualities.map((q, i) => (
+              <div
+                key={i}
+                className="group flex items-start gap-8 p-8 bg-white rounded-[2rem] border border-slate-100 hover:border-[#00AEEF]/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.03)] transition-all duration-500"
+              >
+                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-[#00AEEF] group-hover:text-white transition-all duration-500">
+                  <q.icon size={26} strokeWidth={1.5} className="group-hover:scale-110 transition-transform" />
                 </div>
-                <h4 className="text-2xl font-bold text-gray-900 mb-4">{value.title}</h4>
-                <p className="text-gray-600 leading-relaxed">{value.description}</p>
+                <div>
+                  <h3 className="text-xl font-black text-slate-900 mb-2 tracking-tight">{q.title}</h3>
+                  <p className="text-slate-500 leading-relaxed font-medium">
+                    {q.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="bg-slate-950 rounded-2xl p-12 text-white text-center">
-          <h3 className="text-3xl font-bold mb-12">Nos Résultats en Chiffres</h3>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="group">
-                <div className="text-5xl md:text-6xl font-extrabold mb-2 text-[#00AEEF] group-hover:scale-110 transition-transform duration-300">
-                  {stat.number}
+        {/* Dynamic Stats Bar — Refined Performance Overlay */}
+        <div
+          ref={statsRef}
+          className="relative bg-slate-950 rounded-[3rem] p-1 shadow-2xl overflow-hidden"
+        >
+          {/* Inner glass effect */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 md:p-12 relative z-10">
+            {stats.map((stat, i) => (
+              <div key={i} className="text-center group">
+                <div className="text-4xl md:text-6xl font-black text-white mb-2 tracking-tighter transition-transform group-hover:scale-110 duration-500">
+                  {counts[i]}{stat.suffix}
                 </div>
-                <div className="text-slate-400 text-lg">{stat.label}</div>
+                <div className="text-[10px] md:text-xs text-[#00AEEF] font-black uppercase tracking-[0.3em] opacity-80 group-hover:opacity-100 transition-opacity">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
+
+          {/* Subtle background glow */}
+          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-[#00AEEF]/20 rounded-full blur-[100px] -translate-y-1/2 opacity-20" />
         </div>
+
       </div>
     </section>
   );

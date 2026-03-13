@@ -1,11 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Menu, X, Phone, Mail, ChevronRight, Facebook, Instagram, Twitter } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Menu, X, Phone, Mail, ChevronRight, Facebook, Instagram, Twitter, ChevronDown, Plane, GraduationCap, MapPin } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pathname = usePathname();
+
+  const openDropdown = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setIsDropdownOpen(true);
+  };
+
+  const closeDropdown = () => {
+    closeTimer.current = setTimeout(() => setIsDropdownOpen(false), 150);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,19 +39,36 @@ export function Navigation() {
   }, [isMenuOpen]);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMenuOpen(false);
+    if (pathname !== "/") {
+      window.location.href = `/#${sectionId}`;
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        setIsMenuOpen(false);
+      }
     }
   };
 
-  const navLinks = [
-    { id: "home", label: "Accueil" },
-    { id: "services", label: "Nos Services" },
-    { id: "destinations", label: "Destinations" },
-    { id: "about", label: "À Propos" },
-    { id: "testimonials", label: "Témoignages" },
+  const servicesList = [
+    {
+      title: "Billetterie d'Avion",
+      href: "/services/billetterie",
+      desc: "Le monde entier",
+      icon: Plane
+    },
+    {
+      title: "Études à l'étranger",
+      href: "/services/accompagnement-etudiant",
+      desc: "🇫🇷 France • 🇨🇦 Canada • 🇲🇦 Maroc • 🇹🇷 Turquie • 🇨🇳 Chine • 🇷🇺 Russie • 🇮🇳 Inde • 🇺🇸 USA",
+      icon: GraduationCap
+    },
+    {
+      title: "Assistance Visa",
+      href: "/services/visa-et-immigration",
+      desc: "Montage de dossiers et RDV",
+      icon: MapPin
+    }
   ];
 
   return (
@@ -59,9 +90,12 @@ export function Navigation() {
             <span className="opacity-80">Votre partenaire de confiance pour l'international</span>
             <div className="h-4 w-px bg-white/20"></div>
             <div className="flex gap-4">
-              <Facebook size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
-              <Instagram size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
-              <Twitter size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
+              <a href="https://www.facebook.com/agencedevoyagemali" target="_blank" rel="noopener noreferrer">
+                <Facebook size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
+              </a>
+              <a href="https://www.instagram.com/almoustour_voyages?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+                <Instagram size={14} className="cursor-pointer hover:text-white hover:-translate-y-0.5 transition-all" />
+              </a>
             </div>
           </div>
         </div>
@@ -86,23 +120,88 @@ export function Navigation() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-2">
-              {navLinks.map((link) => (
+              <button
+                onClick={() => scrollToSection("home")}
+                className={`px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wide transition-all duration-300 ${isScrolled
+                  ? "text-slate-600 hover:text-[#00AEEF]"
+                  : "text-white/90 hover:text-white"
+                  }`}
+              >
+                Accueil
+              </button>
+
+              {/* Services Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={openDropdown}
+                onMouseLeave={closeDropdown}
+              >
                 <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
-                  className={`px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wide transition-all duration-300 ${isScrolled
-                    ? "text-slate-600 hover:text-[#00AEEF]"
-                    : "text-white/90 hover:text-white"
-                    }`}
+                  className={`flex items-center gap-1 px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wide transition-all ${isScrolled ? 'text-slate-600 hover:text-[#00AEEF]' : 'text-white/90 hover:text-white'}`}
                 >
-                  {link.label}
+                  Services
+                  <ChevronDown size={13} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
-              ))}
+
+                {/* DROPDOWN PANEL — minimal */}
+                <div
+                  onMouseEnter={openDropdown}
+                  onMouseLeave={closeDropdown}
+                  className={`absolute top-full left-0 w-64 pt-4 transition-all duration-200 ${isDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-1 pointer-events-none'}`}
+                >
+                  <div className="bg-white border border-slate-200/80 rounded-md shadow-lg shadow-black/8 overflow-hidden">
+                    {servicesList.map((srv, idx) => (
+                      <Link
+                        key={idx}
+                        href={srv.href}
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="group flex items-center gap-3 px-5 py-3.5 text-sm font-semibold text-slate-700 hover:text-[#00AEEF] hover:bg-slate-50 transition-all border-b border-slate-100 last:border-b-0"
+                      >
+                        <span className="w-0.5 h-4 bg-[#00AEEF] opacity-0 group-hover:opacity-100 rounded-full transition-opacity shrink-0" />
+                        {srv.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => scrollToSection("about")}
+                className={`px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wide transition-all duration-300 ${isScrolled
+                  ? "text-slate-600 hover:text-[#00AEEF]"
+                  : "text-white/90 hover:text-white"
+                  }`}
+              >
+                À Propos
+              </button>
+
+              <button
+                onClick={() => scrollToSection("testimonials")}
+                className={`px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wide transition-all duration-300 ${isScrolled
+                  ? "text-slate-600 hover:text-[#00AEEF]"
+                  : "text-white/90 hover:text-white"
+                  }`}
+              >
+                Témoignages
+              </button>
+
+              <button
+                onClick={() => scrollToSection("faq")}
+                className={`px-5 py-2.5 rounded-lg text-sm font-semibold tracking-wide transition-all duration-300 ${isScrolled
+                  ? "text-slate-600 hover:text-[#00AEEF]"
+                  : "text-white/90 hover:text-white"
+                  }`}
+              >
+                FAQ
+              </button>
 
               <button
                 onClick={() => scrollToSection("contact")}
-                className="ml-4 bg-[#00AEEF] text-white px-7 py-2.5 rounded-xl text-sm font-semibold hover:bg-sky-500 hover:shadow-lg hover:shadow-[#00AEEF]/30 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2 group"
+                className="relative overflow-hidden group ml-4 bg-gradient-to-r from-[#00AEEF] to-[#008CC2] text-white px-8 py-3 rounded-2xl text-sm font-bold transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-[#00AEEF]/25 flex items-center gap-2"
               >
+                {/* Shine effect */}
+                <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-[-25deg] -translate-x-full group-hover:animate-[shine_0.75s_ease-in-out]" />
+                
                 Contact
                 <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </button>
@@ -135,9 +234,9 @@ export function Navigation() {
         {/* Menu Panel */}
         <div
           className={`absolute top-0 right-0 h-full w-[85%] max-w-sm bg-white/90 backdrop-blur-2xl shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"
-            } border-l border-white/20`}
+            } border-l border-white/20 overflow-y-auto`}
         >
-          <div className="flex flex-col h-full bg-gradient-to-b from-white/50 to-slate-50/80">
+          <div className="flex flex-col min-h-full bg-gradient-to-b from-white/50 to-slate-50/80">
             {/* Header */}
             <div className="p-6 flex justify-between items-center border-b border-slate-200/50">
               <div className="flex items-center gap-2">
@@ -154,36 +253,73 @@ export function Navigation() {
             </div>
 
             {/* Links */}
-            <div className="flex-1 overflow-y-auto py-8 px-6 space-y-3">
-              {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
-                  className="w-full text-left px-5 py-4 text-lg font-bold text-slate-700 hover:text-[#00AEEF] hover:bg-white rounded-xl transition-all duration-300 flex justify-between items-center group shadow-sm border border-transparent hover:border-sky-100 hover:shadow-md"
-                >
-                  <span className="flex items-center gap-4">
-                    <span className="w-1.5 h-6 bg-[#00AEEF]/20 rounded-full group-hover:bg-[#00AEEF] transition-colors" />
-                    {link.label}
-                  </span>
-                  <ChevronRight size={18} className="text-slate-300 group-hover:text-[#00AEEF] group-hover:translate-x-1 transition-all" />
-                </button>
-              ))}
+            <div className="flex-1 py-8 px-6 space-y-3">
+              <button
+                onClick={() => scrollToSection("home")}
+                className="w-full text-left px-5 py-4 text-lg font-bold text-slate-700 hover:text-[#00AEEF] hover:bg-white rounded-xl transition-all duration-300 flex justify-between items-center group shadow-sm border border-transparent"
+              >
+                Accueil
+              </button>
+
+              {/* Mobile Services list */}
+              <div className="px-5 py-4 bg-slate-100/50 rounded-xl space-y-3">
+                <div className="text-lg font-bold text-slate-900 mb-2">Nos Services</div>
+                {servicesList.map((srv, idx) => (
+                  <Link
+                    key={idx}
+                    href={srv.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center p-3 rounded-lg bg-white shadow-sm border border-slate-100"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#00AEEF]/10 flex items-center justify-center text-[#00AEEF]">
+                      <srv.icon size={16} />
+                    </div>
+                    <div className="ml-3">
+                      <div className="text-sm font-bold text-slate-800">{srv.title}</div>
+                      <div className="text-[10px] text-slate-500">{srv.desc}</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <button
+                onClick={() => scrollToSection("about")}
+                className="w-full text-left px-5 py-4 text-lg font-bold text-slate-700 hover:text-[#00AEEF] hover:bg-white rounded-xl transition-all duration-300 flex justify-between items-center group shadow-sm border border-transparent"
+              >
+                À Propos
+              </button>
+
+              <button
+                onClick={() => scrollToSection("testimonials")}
+                className="w-full text-left px-5 py-4 text-lg font-bold text-slate-700 hover:text-[#00AEEF] hover:bg-white rounded-xl transition-all duration-300 flex justify-between items-center group shadow-sm border border-transparent"
+              >
+                Témoignages
+              </button>
+
+              <button
+                onClick={() => scrollToSection("faq")}
+                className="w-full text-left px-5 py-4 text-lg font-bold text-slate-700 hover:text-[#00AEEF] hover:bg-white rounded-xl transition-all duration-300 flex justify-between items-center group shadow-sm border border-transparent"
+              >
+                FAQ
+              </button>
             </div>
 
             {/* Footer Actions */}
-            <div className="p-8 border-t border-slate-200/50 space-y-5">
+            <div className="p-8 border-t border-slate-200/50 mt-auto">
               <button
                 onClick={() => scrollToSection("contact")}
-                className="w-full bg-[#00AEEF] text-white px-6 py-5 rounded-xl text-lg font-black hover:bg-[#008cc2] active:scale-95 transition-all duration-300 shadow-xl shadow-[#00AEEF]/20 flex items-center justify-center gap-3"
+                className="relative overflow-hidden group w-full bg-gradient-to-r from-[#00AEEF] to-[#008CC2] text-white px-6 py-5 rounded-2xl text-lg font-black active:scale-95 transition-all duration-300 shadow-xl shadow-[#00AEEF]/20 flex items-center justify-center gap-3 mb-5"
               >
+                {/* Shine effect */}
+                <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-[-25deg] -translate-x-full group-hover:animate-[shine_0.75s_ease-in-out]" />
+                
                 <Phone size={20} />
                 Contactez-nous
               </button>
 
-              <div className="flex justify-center gap-8 pt-2 text-slate-400">
-                <a href="https://www.facebook.com/agencedevoyagemali" target="_blank" rel="noreferrer" className="hover:text-[#00AEEF] transition-colors transform hover:scale-110"><Facebook size={24} /></a>
-                <a href="#" className="hover:text-[#00AEEF] transition-colors transform hover:scale-110"><Instagram size={24} /></a>
-                <a href="#" className="hover:text-[#00AEEF] transition-colors transform hover:scale-110"><Twitter size={24} /></a>
+              <div className="flex justify-center gap-8 pt-2 text-slate-400 mb-4">
+                <a href="https://www.facebook.com/agencedevoyagemali" target="_blank" rel="noreferrer" className="hover:text-[#00AEEF] transition-colors"><Facebook size={24} /></a>
+                <a href="https://www.instagram.com/almoustour_voyages?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className="hover:text-[#00AEEF] transition-colors"><Instagram size={24} /></a>
               </div>
 
               <p className="text-center text-[10px] uppercase tracking-widest text-slate-400 font-bold">Votre partenaire voyage au Mali</p>

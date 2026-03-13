@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { CustomCursor } from "@/components/CustomCursor";
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -99,7 +101,10 @@ export default function RootLayout({
       </head>
       <Analytics />
       <SpeedInsights />
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <CustomCursor />
+        {children}
+      </body>
     </html>
   );
 }

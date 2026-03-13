@@ -15,22 +15,12 @@ export function Footer() {
   const quickLinks = [
     { name: "Accueil", href: "home" },
     { name: "Nos Services", href: "services" },
-    { name: "Destinations", href: "destinations" },
+
     { name: "À Propos", href: "about" },
     { name: "Témoignages", href: "testimonials" },
     { name: "Contact", href: "contact" },
   ];
 
-  const destinations = [
-    { name: "France", flag: "🇫🇷" },
-    { name: "Canada", flag: "🇨🇦" },
-    { name: "Maroc", flag: "🇲🇦" },
-    { name: "Turquie", flag: "🇹🇷" },
-    { name: "Chine", flag: "🇨🇳" },
-    { name: "Russie", flag: "🇷🇺" },
-    { name: "Inde", flag: "🇮🇳" },
-    { name: "États-Unis", flag: "🇺🇸" },
-  ];
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -40,7 +30,7 @@ export function Footer() {
     <footer className="bg-slate-950 text-white">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="mb-6">
@@ -73,7 +63,7 @@ export function Footer() {
             {/* Social Links */}
             <div className="flex space-x-3 mt-6">
               <a
-                href="https://www.facebook.com/agencedevoyagemali/?locale=fr_FR"
+                href="https://www.facebook.com/agencedevoyagemali"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 border border-slate-800 rounded-xl flex items-center justify-center hover:bg-[#00AEEF] hover:border-[#00AEEF] transition-all duration-300"
@@ -82,10 +72,10 @@ export function Footer() {
                 <Facebook size={18} />
               </a>
               <a
-                href="https://www.instagram.com/almoustour_voyages/"
+                href="https://www.instagram.com/almoustour_voyages?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 border border-slate-800 rounded-xl flex items-center justify-center hover:bg-[#00AEEF] hover:border-[#00AEEF] transition-all duration-300"
+                className="w-10 h-10 border border-slate-800 rounded-xl flex items-center justify-center hover:bg-[#E1306C] hover:border-[#E1306C] transition-all duration-300"
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
@@ -121,23 +111,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Destinations */}
-          <div>
-            <h3 className="text-lg font-bold mb-6 text-white">Nos Destinations</h3>
-            <ul className="space-y-3">
-              {destinations.map((dest, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => scrollToSection("destinations")}
-                    className="flex items-center gap-2 text-slate-400 hover:text-[#00AEEF] transition-colors duration-200 text-sm"
-                  >
-                    <span>{dest.flag}</span>
-                    <span>{dest.name}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+
 
           {/* WhatsApp CTA */}
           <div>
@@ -157,7 +131,7 @@ export function Footer() {
               Discuter sur WhatsApp
             </a>
             <p className="text-slate-500 text-xs text-center mt-3">
-              +223 73 71 11 11 · Disponible 6j/7
+              +223 73 71 11 11 · Disponible 5j/7
             </p>
           </div>
         </div>
