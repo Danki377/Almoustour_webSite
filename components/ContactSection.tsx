@@ -3,7 +3,7 @@
 import { MapPin, Phone, Mail, Clock, Shield, Facebook, X, GraduationCap, Plane, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 
 export function ContactSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,7 +85,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <h5 className="font-bold text-slate-900 mb-1">Téléphone</h5>
-                    <a href="tel:+22373711111" className="text-slate-500 text-sm hover:text-[#00AEEF] transition-colors font-medium">+223 73 71 11 11</a>
+                    <a href="tel:+22363711111" className="text-slate-500 text-sm hover:text-[#00AEEF] transition-colors font-medium">+223 63 71 11 11</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-6">

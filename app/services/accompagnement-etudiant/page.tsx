@@ -29,7 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 const waMsg = "Bonjour Al-Moustour, je souhaite être accompagné pour mes études à l'étranger.";
 
 const countries = [

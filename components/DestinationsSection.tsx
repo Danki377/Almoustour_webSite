@@ -2,7 +2,7 @@
 
 import { Shield, TrendingUp, ArrowRight } from "lucide-react";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 
 const destinations = [
   {

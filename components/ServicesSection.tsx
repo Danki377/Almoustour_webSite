@@ -3,7 +3,7 @@
 import { Plane, GraduationCap, MapPin, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 
 const services = [
   {

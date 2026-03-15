@@ -77,9 +77,9 @@ export function Navigation() {
       <div className="hidden md:block bg-slate-900 text-slate-300 py-2 px-4 transition-all duration-300 border-b border-white/10">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-xs tracking-wide font-medium">
           <div className="flex items-center gap-6">
-            <a href="tel:+22373711111" className="flex items-center gap-2 hover:text-white transition-colors duration-200">
+            <a href="tel:+22363711111" className="flex items-center gap-2 hover:text-white transition-colors duration-200">
               <Phone size={14} className="text-[#00AEEF]" />
-              <span>+223 73 71 11 11</span>
+              <span>+223 63 71 11 11</span>
             </a>
             <a href="mailto:ALMOUSTOURVOYAGE@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors duration-200">
               <Mail size={14} className="text-[#00AEEF]" />

@@ -17,7 +17,7 @@ import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Badge } from "@/components/ui/badge";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 const waMsg = "Bonjour Al-Moustour, j'ai besoin d'informations pour une demande de visa touristique.";
 
 export default function VisaPage() {

@@ -9,7 +9,7 @@ import {
   Shield,
 } from "lucide-react";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 
 export function Footer() {
   const quickLinks = [
@@ -52,7 +52,7 @@ export function Footer() {
               </div>
               <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noreferrer" className="flex items-center text-slate-400 hover:text-[#25D366] transition-colors">
                 <Phone size={16} className="mr-3 text-[#00AEEF]" />
-                <span className="text-sm">+223 73 71 11 11</span>
+                <span className="text-sm">+223 63 71 11 11</span>
               </a>
               <a href="mailto:Almoustourvoyage@gmail.com" className="flex items-center text-slate-400 hover:text-[#00AEEF] transition-colors">
                 <Mail size={16} className="mr-3 text-[#00AEEF]" />
@@ -131,7 +131,7 @@ export function Footer() {
               Discuter sur WhatsApp
             </a>
             <p className="text-slate-500 text-xs text-center mt-3">
-              +223 73 71 11 11 · Disponible 5j/7
+              +223 63 71 11 11 · Disponible 5j/7
             </p>
           </div>
         </div>

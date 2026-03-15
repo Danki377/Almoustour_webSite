@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Shield, Star, Users, Globe, Plane, GraduationCap, MapPin } from "lucide-react";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);

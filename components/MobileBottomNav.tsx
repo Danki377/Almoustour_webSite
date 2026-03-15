@@ -36,7 +36,7 @@ export function MobileBottomNav() {
                 <div className="w-px h-8 bg-white/10 mx-1" />
 
                 <a
-                    href="https://wa.me/22373711111"
+                    href="https://wa.me/22363711111"
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full shadow-lg shadow-green-500/20 active:scale-90 transition-transform"

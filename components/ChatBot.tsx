@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, X, Bot, User, Phone } from "lucide-react";
 
-const WA_NUMBER = "22373711111";
+const WA_NUMBER = "22363711111";
 
 interface Message {
   id: string;
@@ -72,7 +72,7 @@ const botResponses = [
   },
   {
     triggers: ["contact", "appel", "téléphone", "whatsapp"],
-    response: "📱 **Contactez-nous directement**\n• WhatsApp / Tel : +223 73 71 11 11\n• Email : Almoustourvoyage@gmail.com\n• Adresse : Sotuba ACI, avenue de l'armée (près du 3ème pont), Bamako\n\nNos conseillers vous répondent rapidement sur WhatsApp !",
+    response: "📱 **Contactez-nous directement**\n• WhatsApp / Tel : +223 63 71 11 11\n• Email : Almoustourvoyage@gmail.com\n• Adresse : Sotuba ACI, avenue de l'armée (près du 3ème pont), Bamako\n\nNos conseillers vous répondent rapidement sur WhatsApp !",
   },
   {
     triggers: ["bonjour", "merci", "au revoir"],
