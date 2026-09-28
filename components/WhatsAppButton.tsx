@@ -1,37 +1,35 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { waLink } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 export function WhatsAppButton() {
-  const handleWhatsAppClick = () => {
-    // Replace with actual WhatsApp number
-    const phoneNumber = "+22363711111";
-    const message =
-      "Bonjour! Je souhaiterais obtenir des informations sur vos services d'accompagnement pour étudier à l'étranger.";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-    window.open(whatsappUrl, "_blank");
-  };
+  // Hidden over the hero so it never covers the main call-to-action
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.6);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <button
-      onClick={handleWhatsAppClick}
-      className="flex fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-2xl shadow-2xl hover:bg-[#1ebd5a] transition-all duration-300 transform hover:scale-110 group"
+    <a
+      href={waLink("Bonjour ! Je souhaiterais obtenir des informations sur vos services.")}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        "fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-[0_12px_30px_-10px_rgba(37,211,102,0.7)] transition-all duration-300 hover:scale-105 lg:bottom-8 lg:right-8",
+        visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
+      )}
       aria-label="Contacter via WhatsApp"
+      tabIndex={visible ? 0 : -1}
     >
-      <MessageCircle size={28} className="group-hover:animate-pulse" />
-
-      {/* Tooltip */}
-      <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-        <div className="bg-gray-900 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap">
-          Contactez-nous sur WhatsApp
-          <div className="absolute top-1/2 -translate-y-1/2 left-full w-0 h-0 border-l-4 border-l-gray-900 border-t-4 border-t-transparent border-b-4 border-b-transparent"></div>
-        </div>
-      </div>
-
-      {/* Pulse Effect */}
-      <div className="absolute inset-0 bg-[#25D366] rounded-2xl animate-ping opacity-20"></div>
-    </button>
+      <span className="absolute inset-0 animate-soft-ping rounded-full bg-whatsapp" />
+      <WhatsAppIcon className="relative h-7 w-7" />
+    </a>
   );
 }

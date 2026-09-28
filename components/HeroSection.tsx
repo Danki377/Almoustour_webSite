@@ -1,197 +1,315 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
-import { ArrowRight, Shield, Star, Users, Globe, Plane, GraduationCap, MapPin } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { GraduationCap, Plane, ShieldCheck } from "lucide-react";
+import { SplitFlap } from "@/components/SplitFlap";
+import { ArrowIcon } from "@/components/icons/ArrowIcon";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { waLink } from "@/lib/site";
+import { cn } from "@/lib/utils";
+import { ramp, useRamp } from "@/lib/motion";
 
-const WA_NUMBER = "22363711111";
+// Re-encoded with a keyframe every 3 frames so seeking on scroll stays smooth
+const VIDEO_DESKTOP = "/videos/hero-scroll.mp4";
+const VIDEO_MOBILE = "/videos/hero-scroll-mobile.mp4";
+
+const DEPARTURES = ["Paris", "Montréal", "Istanbul", "Casablanca", "Pékin", "Moscou", "New Delhi", "New York", "Dubaï"];
+
+const FEATURES = [
+  { icon: GraduationCap, title: "Études internationales", text: "France, Canada, Turquie, Maroc, Chine…" },
+  { icon: Plane, title: "Billetterie toutes lignes", text: "Tarifs étudiants et meilleurs prix" },
+  { icon: ShieldCheck, title: "Paiement sur résultats", text: "Frais d'agence perçus après obtention du visa" },
+];
+
+/** Fades a block in and/or out over slices of the hero's scroll progress. */
+function Stage({
+  progress,
+  fadeIn,
+  fadeOut,
+  className,
+  children,
+}: {
+  progress: MotionValue<number>;
+  fadeIn?: [number, number];
+  fadeOut?: [number, number];
+  className?: string;
+  children: ReactNode;
+}) {
+  const input: number[] = [];
+  const alpha: number[] = [];
+  const shift: number[] = [];
+  if (fadeIn) {
+    input.push(fadeIn[0], fadeIn[1]);
+    alpha.push(0, 1);
+    shift.push(48, 0);
+  } else {
+    input.push(0);
+    alpha.push(1);
+    shift.push(0);
+  }
+  if (fadeOut) {
+    input.push(fadeOut[0], fadeOut[1]);
+    alpha.push(1, 0);
+    shift.push(0, -48);
+  } else {
+    input.push(1);
+    alpha.push(1);
+    shift.push(0);
+  }
+  const opacity = useRamp(progress, input, alpha);
+  const y = useRamp(progress, input, shift);
+  const pointerEvents = useTransform(opacity, (o) => (o > 0.5 ? "auto" : "none"));
+  return (
+    <motion.div style={{ opacity, y, pointerEvents }} className={className}>
+      {children}
+    </motion.div>
+  );
+}
+
+function Word({ progress, at, children }: { progress: MotionValue<number>; at: number; children: ReactNode }) {
+  const opacity = useRamp(progress, [at, at + 0.05], [0, 1]);
+  const x = useRamp(progress, [at, at + 0.05], [-24, 0]);
+  return (
+    <motion.span style={{ opacity, x }} className="block">
+      {children}
+    </motion.span>
+  );
+}
+
+function Ctas({ className }: { className?: string }) {
+  return (
+    <div className={cn("flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4", className)}>
+      <Link href="/#services" className="btn-primary w-full justify-center shadow-2xl sm:w-auto">
+        <span className="button-sm">Découvrir nos services</span>
+        <ArrowIcon />
+      </Link>
+      <a
+        href={waLink("Bonjour Al-Moustour, je souhaite échanger avec un conseiller pour mon projet de voyage ou d'études.")}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-wa w-full justify-center shadow-2xl shadow-whatsapp/25 sm:w-auto"
+      >
+        <WhatsAppIcon />
+        <span className="button-sm font-semibold">Parler à un conseiller</span>
+      </a>
+    </div>
+  );
+}
+
+function FeatureStrip() {
+  return (
+    <div className="border-t border-white/10 bg-canvas/70 backdrop-blur-xl">
+      <div className="no-scrollbar flex snap-x overflow-x-auto divide-x divide-white/10 sm:container-v sm:grid sm:grid-cols-3 sm:overflow-visible">
+        {FEATURES.map((f) => (
+          <div key={f.title} className="flex min-w-[17rem] shrink-0 snap-start items-center gap-4 px-5 py-4 text-left sm:min-w-0 sm:px-6 sm:py-5">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-accent">
+              <f.icon className="h-[18px] w-[18px]" />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-white">{f.title}</p>
+              <p className="text-xs text-white/60">{f.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Eyebrow() {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-canvas/60 px-4 py-2 text-xs font-medium tracking-wide text-white shadow-xl backdrop-blur-md sm:text-sm">
+      <span className="relative flex h-2 w-2">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+      </span>
+      <span className="font-semibold uppercase tracking-wider text-accent">Al Moustour Voyages</span>
+      <span className="hidden text-white/40 sm:inline">·</span>
+      <span className="hidden text-white/80 sm:inline">Votre passerelle vers le monde</span>
+    </div>
+  );
+}
 
 export function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const reduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const slides = [
-    {
-      title: "Réservez vos billets d'avion au meilleur prix",
-      subtitle:
-        "Billets d'avion vers toutes les destinations du monde — Europe, Amériques, Asie, Moyen-Orient. Tarifs compétitifs, réponse rapide sur WhatsApp.",
-      image:
-        "https://images.pexels.com/photos/358319/pexels-photo-358319.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080",
-      cta: "Réserver un billet",
-      tag: "Nouveauté",
-      waMsg: "Bonjour Al-Moustour, je souhaite réserver un billet d'avion.",
-    },
-    {
-      title: "Réalisez votre rêve d'étudier à l'étranger",
-      subtitle:
-        "Canada, France, Turquie, Maroc, Chine, Russie, Inde, USA — Nous vous accompagnons de A à Z.",
-      image:
-        "https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080",
-      cta: "Commencer mon projet",
-      tag: null,
-      waMsg: "Bonjour Al-Moustour, je souhaite me renseigner sur les études à l'étranger.",
-    },
-    {
-      title: "Obtenez votre visa rapidement & sans stress",
-      subtitle:
-        "Dubai, Canada, USA, Allemagne, Turquie, Chine, Maroc… Rendez-vous consulaires et montage de dossiers. Tarifs publiés, délais garantis.",
-      image:
-        "https://images.pexels.com/photos/5668473/pexels-photo-5668473.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080",
-      cta: "Voir nos tarifs visa",
-      tag: null,
-      waMsg: "Bonjour Al-Moustour, je souhaite me renseigner sur l'assistance visa.",
-    },
-  ];
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
 
+  // Cabin interior is bright: shade it more at the start, less once we are in the sky
+  const shade = useRamp(scrollYProgress, [0, 0.35, 0.7, 1], [0.55, 0.3, 0.25, 0.45]);
+  const videoScale = useRamp(scrollYProgress, [0, 1], [1.04, 1]);
+  const hintOpacity = useRamp(scrollYProgress, [0, 0.05], [1, 0]);
+  const stripY = useTransform(scrollYProgress, (v) => `${ramp(v, [0.72, 0.85], [100, 0])}%`);
+  const railScale = useRamp(scrollYProgress, [0, 1], [0, 1]);
+
+  // Scrub the film with the scroll position (eased, so it glides instead of stepping)
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 7000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
+    const video = videoRef.current;
+    if (!video || reduceMotion) return;
 
-  const openWhatsApp = (msg: string) => {
-    window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
-  };
+    video.src = window.matchMedia("(max-width: 767px)").matches ? VIDEO_MOBILE : VIDEO_DESKTOP;
+    video.load();
 
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+    let raf = 0;
+    let current = 0;
+    const tick = () => {
+      const duration = video.duration;
+      if (duration && Number.isFinite(duration)) {
+        const target = scrollYProgress.get() * (duration - 0.05);
+        current += (target - current) * 0.14;
+        if (!video.seeking && Math.abs(video.currentTime - current) > 0.02) {
+          video.currentTime = current;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    // iOS Safari only paints seeked frames once the video has been "played" by a gesture
+    const unlock = () => {
+      video.play().then(() => video.pause()).catch(() => {});
+    };
+    window.addEventListener("touchstart", unlock, { once: true, passive: true });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("touchstart", unlock);
+    };
+  }, [reduceMotion, scrollYProgress]);
+
+  // Reduced motion: a single static screen on the final frame, everything visible
+  if (reduceMotion) {
+    return (
+      <section id="home" className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden text-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/hero-end.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-canvas/70 via-canvas/30 to-canvas" />
+        <div className="container-v relative flex flex-1 flex-col items-center justify-center gap-6 pt-28">
+          <Eyebrow />
+          <h1 className="h1">
+            Voyagez<span className="text-accent">.</span>
+          </h1>
+          <p className="body-xl max-w-2xl">
+            Études à l&apos;étranger, billetterie d&apos;avion et assistance visa, de Bamako vers le monde.
+          </p>
+          <Ctas />
+        </div>
+        <div className="relative mt-10">
+          <FeatureStrip />
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section id="home" className="relative h-[100dvh] overflow-hidden">
-      {/* Background Slides */}
-      <div className="absolute inset-0 bg-black">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
-          >
-            <div className="relative w-full h-full">
-              <Image
-                src={slide.image}
-                alt={slide.title}
-                fill
-                className={`object-cover transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? "scale-110" : "scale-100"
-                  }`}
-                priority={index === 0}
-                quality={90}
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/70 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center">
-        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-24">
-          <div className="max-w-3xl">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-slate-900 border border-[#00AEEF]/20 rounded-lg px-3 py-1.5 mb-6 sm:mb-8 opacity-0 animate-[fadeInUp_0.8s_ease-out_0.2s_forwards]">
-              <Shield size={12} className="text-[#00AEEF]" />
-              <span className="text-white/80 text-[10px] sm:text-xs font-semibold uppercase tracking-widest">Expertise & Confiance depuis 8 ans</span>
-            </div>
-
-            <div className="overflow-hidden mb-6">
-              <h1 className="text-[11vw] sm:text-6xl xl:text-7xl font-black text-white leading-[1.1] drop-shadow-2xl opacity-0 animate-[fadeInUp_1s_ease-out_0.4s_forwards]">
-                {slides[currentSlide].title}
-              </h1>
-            </div>
-
-            <p className="text-base sm:text-xl text-slate-100 mb-8 sm:mb-10 max-w-2xl font-light leading-relaxed opacity-0 animate-[fadeInUp_1s_ease-out_0.6s_forwards]">
-              {slides[currentSlide].subtitle}
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-[fadeInUp_1s_ease-out_0.8s_forwards] max-w-sm sm:max-w-none">
-              <button
-                onClick={() => openWhatsApp(slides[currentSlide].waMsg)}
-                className="relative overflow-hidden group bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all duration-300 transform active:scale-95 shadow-2xl shadow-green-600/30 flex items-center justify-center gap-3 ring-4 ring-white/10 hover:ring-green-400/50"
-              >
-                {/* Shine effect */}
-                <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-[-25deg] -translate-x-full group-hover:animate-[shine_0.75s_ease-in-out]" />
-                
-                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-                {slides[currentSlide].cta}
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-              </button>
-
-              <button
-                onClick={() => scrollToSection("services")}
-                className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-white/20 active:scale-95 transition-all duration-300"
-              >
-                Nos services
-              </button>
-            </div>
-
-            {/* Stats Bar - Hidden on mobile, visible on desktop */}
-            <div className="hidden md:grid mt-16 pt-8 border-t border-white/10 grid-cols-4 gap-6 opacity-0 animate-[fadeInUp_1s_ease-out_1s_forwards]">
-              {[
-                { icon: Users, value: "500+", label: "Étudiants" },
-                { icon: Globe, value: "8", label: "Destinations" },
-                { icon: Star, value: "8+", label: "Années" },
-                { icon: Shield, value: "100%", label: "Succès" },
-              ].map((stat, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="bg-white/5 p-2 rounded-xl flex-shrink-0">
-                    <stat.icon className="text-[#00AEEF]" size={20} />
-                  </div>
-                  <div>
-                    <div className="text-xl font-bold text-white leading-none">{stat.value}</div>
-                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter mt-1">{stat.label}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Services Strip */}
-      <div className="absolute bottom-0 left-0 right-0 z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 divide-x divide-white/10 bg-slate-900/80 backdrop-blur-md border-t border-white/10">
-            {[
-              { icon: Plane, label: "Billetterie d'Avion", sub: "Partout dans le monde", href: "/services/billetterie" },
-              { icon: GraduationCap, label: "Études à l'Étranger", sub: "FR · CA · TR · CN · MA…", href: "/services/accompagnement-etudiant" },
-              { icon: MapPin, label: "Assistance Visa", sub: "12+ pays, tarifs publiés", href: "/services/visa-et-immigration" },
-            ].map((item, i) => (
-              <Link
-                key={i}
-                href={item.href}
-                className="group flex items-center gap-3 px-4 sm:px-6 py-4 hover:bg-white/5 transition-colors"
-              >
-                <div className="w-8 h-8 rounded-lg bg-[#00AEEF]/10 flex items-center justify-center shrink-0">
-                  <item.icon size={16} className="text-[#00AEEF]" strokeWidth={1.8} />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-white text-xs sm:text-sm font-bold truncate group-hover:text-[#00AEEF] transition-colors">{item.label}</div>
-                  <div className="text-slate-500 text-[10px] sm:text-xs font-medium truncate hidden sm:block">{item.sub}</div>
-                </div>
-                <ArrowRight size={14} className="ml-auto text-slate-600 group-hover:text-[#00AEEF] group-hover:translate-x-0.5 transition-all shrink-0 hidden sm:block" />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Slide Indicators */}
-      <div className="absolute bottom-20 sm:bottom-24 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            aria-label={`Diapositive ${index + 1}`}
-            className={`h-1 rounded-full transition-all duration-500 ${index === currentSlide ? "w-8 bg-[#00AEEF]" : "w-3 bg-white/30 hover:bg-white/70"
-              }`}
+    <section ref={sectionRef} id="home" className="relative h-[280svh] lg:h-[320svh]">
+      <div className="sticky top-0 h-[100svh] overflow-hidden">
+        {/* Film (poster shows instantly, video takes over once loaded) */}
+        <motion.div style={{ scale: videoScale }} className="absolute inset-0">
+          <picture>
+            <source media="(max-width: 767px)" srcSet="/images/hero-start-mobile.jpg" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/hero-start.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+          </picture>
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover"
           />
-        ))}
+        </motion.div>
+        <motion.div style={{ opacity: shade }} className="absolute inset-0 bg-canvas" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-canvas/90 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-canvas to-transparent" />
+
+        {/* 1 — Cabin: the promise */}
+        <Stage
+          progress={scrollYProgress}
+          fadeOut={[0.18, 0.28]}
+          className="container-v absolute inset-0 flex flex-col items-center justify-center pt-16 text-center"
+        >
+          <Eyebrow />
+          <h1 className="h1 mt-6 font-bold drop-shadow-[0_4px_30px_rgba(0,0,0,0.6)] lg:mt-8">
+            Voyagez<span className="text-accent">.</span>
+          </h1>
+          <p className="body-xl mt-6 max-w-2xl drop-shadow-[0_2px_14px_rgba(0,0,0,0.8)] sm:text-2xl">
+            Études à l&apos;étranger, billetterie d&apos;avion et assistance visa.
+            <br className="hidden sm:inline" />
+            <span className="text-white/80"> De Bamako vers les plus grandes destinations mondiales.</span>
+          </p>
+        </Stage>
+
+        {/* 2 — Through the window: what we handle */}
+        <Stage
+          progress={scrollYProgress}
+          fadeIn={[0.3, 0.36]}
+          fadeOut={[0.56, 0.64]}
+          className="container-v absolute inset-0 flex flex-col justify-center"
+        >
+          <p className="title-xs mb-4 uppercase tracking-[0.3em] text-accent">On s&apos;occupe de tout</p>
+          <div className="text-[clamp(3rem,10vw,8.5rem)] font-semibold leading-[0.95] tracking-[-0.06em] drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]">
+            <Word progress={scrollYProgress} at={0.33}>
+              Admission.
+            </Word>
+            <Word progress={scrollYProgress} at={0.39}>
+              Visa.
+            </Word>
+            <Word progress={scrollYProgress} at={0.45}>
+              <span className="text-accent">Billet.</span>
+            </Word>
+          </div>
+        </Stage>
+
+        {/* 3 — Open sky: arrival + actions */}
+        <Stage
+          progress={scrollYProgress}
+          fadeIn={[0.66, 0.74]}
+          className="container-v absolute inset-0 flex flex-col items-start justify-end pb-36 text-left sm:pb-36 lg:pb-40"
+        >
+          <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-base sm:text-lg">
+            <span className="title-xs uppercase tracking-[0.25em] text-white/70">Départ BKO</span>
+            <span className="text-sun">→</span>
+            <SplitFlap words={DEPARTURES} length={10} />
+          </div>
+          <h2 className="h2 max-w-3xl drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+            Votre avenir <span className="text-accent">décolle</span> depuis Bamako.
+          </h2>
+          <Ctas className="mt-8 w-full sm:w-auto sm:justify-start" />
+        </Stage>
+
+        {/* Services strip slides up with the final stage */}
+        <motion.div style={{ y: stripY }} className="absolute inset-x-0 bottom-0">
+          <FeatureStrip />
+        </motion.div>
+
+        {/* Scroll hint */}
+        <motion.div
+          style={{ opacity: hintOpacity }}
+          className="pointer-events-none absolute inset-x-0 bottom-8 flex flex-col items-center gap-3"
+        >
+          <span className="title-xs uppercase tracking-[0.3em] text-white/70">Faites défiler pour embarquer</span>
+          <span className="relative h-10 w-px overflow-hidden bg-white/20">
+            <span className="absolute inset-x-0 top-0 h-1/2 animate-scroll-hint bg-white" />
+          </span>
+        </motion.div>
+
+        {/* Flight progress rail (desktop) */}
+        <div className="pointer-events-none absolute right-10 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-3 lg:flex">
+          <span className="title-xs text-white/60">BKO</span>
+          <span className="relative h-40 w-px bg-white/15">
+            <motion.span
+              style={{ scaleY: railScale }}
+              className="absolute inset-0 origin-top bg-accent"
+            />
+          </span>
+          <span className="title-xs text-white/60">Monde</span>
+        </div>
       </div>
     </section>
   );

@@ -1,14 +1,14 @@
 import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { CustomCursor } from "@/components/CustomCursor";
+import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-});
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#061423",
+};
 
 export const metadata: Metadata = {
   title: {
@@ -49,9 +49,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/ALmoustour logo.jpg",
-        width: 800,
-        height: 600,
+        url: "/og-image.jpg",
+        width: 959,
+        height: 960,
         alt: "AL MOUSTOUR Voyages Logo",
       },
     ],
@@ -61,15 +61,9 @@ export const metadata: Metadata = {
     title: "AL MOUSTOUR Voyages",
     description:
       "Spécialiste de l'accompagnement étudiant pour étudier à l'étranger.",
-    images: ["/ALmoustour logo.jpg"],
+    images: ["/og-image.jpg"],
     creator: "@almoustour",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
-  themeColor: "#00AEEF",
   robots: {
     index: true,
     follow: true,
@@ -89,21 +83,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="scroll-smooth">
+    <html lang="fr">
       <head>
+        <link rel="icon" href="/logo.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
         />
-        <link rel="icon" href="/almoustour logo.png" />
       </head>
-      <Analytics />
-      <SpeedInsights />
-      <body className={`${inter.className} antialiased`}>
-        <CustomCursor />
+      <body>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

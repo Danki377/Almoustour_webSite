@@ -1,139 +1,147 @@
-"use client";
-
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { 
-  MapPin, 
-  ArrowRight, 
-  ShieldCheck, 
-  CheckCircle2, 
-  Clock, 
-  Navigation as NavIcon,
-  ChevronRight
-} from "lucide-react";
+import { CalendarClock, MapPin, ShieldCheck } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { Badge } from "@/components/ui/badge";
+import { PageIntro } from "@/components/PageIntro";
+import { CtaBanner } from "@/components/CtaBanner";
+import { Head, HeadSplit } from "@/components/Head";
+import { Reveal } from "@/components/Reveal";
+import { ArrowIcon } from "@/components/icons/ArrowIcon";
+import { waLink } from "@/lib/site";
 
-const WA_NUMBER = "22363711111";
 const waMsg = "Bonjour Al-Moustour, j'ai besoin d'informations pour une demande de visa touristique.";
 
+const OFFERS = [
+  { country: "Canada", code: "YUL", flag: "🇨🇦", service: "Visa touristique", price: "650.000 FCFA", delay: "0 à 6 mois" },
+  { country: "Dubaï", code: "DXB", flag: "🇦🇪", service: "Visa express", price: "110.000 FCFA", delay: "24h à 72h" },
+  { country: "Maroc", code: "CMN", flag: "🇲🇦", service: "AEVM", price: "55.000 FCFA", delay: "24h à 72h" },
+  { country: "Oumra", code: "JED", flag: "🇸🇦", service: "Visa", price: "210.000 FCFA", delay: "24h à 72h" },
+  { country: "Turquie", code: "IST", flag: "🇹🇷", service: "Visa touristique", price: "220.000 FCFA", delay: "0 à 30 jours" },
+  { country: "Russie", code: "SVO", flag: "🇷🇺", service: "Visa touristique", price: "250.000 FCFA", delay: "0 à 2 mois" },
+  { country: "USA / Europe", code: "···", flag: "🌐", service: "Rendez-vous & montage", price: "Sur devis", delay: "Variable" },
+];
+
+const FEATURES = [
+  { icon: ShieldCheck, title: ["Dossiers", "sécurisés"], text: "Expertise en montage de dossier pour optimiser vos chances." },
+  { icon: CalendarClock, title: ["Délais", "respectés"], text: "Suivi rigoureux des calendriers consulaires et rendez-vous." },
+  { icon: MapPin, title: ["Suivi à", "l'arrivée"], text: "Conseils pour votre installation et vos premiers jours sur place." },
+];
+
 export default function VisaPage() {
-  const visaOffers = [
-    { country: "CANADA", flag: "🇨🇦", service: "VISA Touristique", tarif: "650.000 FCFA", delai: "0 à 6 mois" },
-    { country: "DUBAI", flag: "🇦🇪", service: "VISA Express", tarif: "110.000 FCFA", delai: "24h à 72h" },
-    { country: "MAROC", flag: "🇲🇦", service: "AEVM", tarif: "55.000 FCFA", delai: "24h à 72h" },
-    { country: "OUMRA", flag: "🇸🇦", service: "VISA", tarif: "210.000 FCFA", delai: "24h à 72h" },
-    { country: "TURQUIE", flag: "🇹🇷", service: "VISA Touristique", tarif: "220.000 FCFA", delai: "0 à 30 jours" },
-    { country: "RUSSIE", flag: "🇷🇺", service: "VISA Touristique", tarif: "250.000 FCFA", delai: "0 à 2 mois" },
-    { country: "USA / EUROPE", flag: "🌐", service: "Rendez-vous & Montage", tarif: "Sur devis", delai: "Variable" },
-  ];
-
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen overflow-x-clip">
       <Navigation />
-      
-      {/* Hero Section */}
-      <section className="relative h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-slate-900">
-          <Image 
-            src="/visa_hero.png"
-            alt="Assistance Visa Al Moustour"
-            fill
-            className="object-cover opacity-50"
-            priority
+
+      <PageIntro
+        label="Assistance visa"
+        title={
+          <>
+            Assistance visa <br className="hidden lg:block" />& dossiers
+          </>
+        }
+        lead="Simplifiez vos démarches pour l'obtention de vos visas vers le monde entier. Rendez-vous consulaires et montage de dossiers, tarifs publiés."
+        image="/images/visa.jpg"
+        imageAlt="Passeport ouvert avec tampons de visa"
+        cta="Lancer ma demande"
+        waMsg={waMsg}
+        facts={[
+          { value: "12+", label: "Pays couverts" },
+          { value: "24h", label: "Délai express (Dubaï, Maroc, Oumra)" },
+          { value: "8+", label: "Années d'expérience" },
+          { value: "100%", label: "Tarifs transparents" },
+        ]}
+      />
+
+      <section className="section-y">
+        <div className="container-v">
+          <HeadSplit
+            title={
+              <>
+                Nos offres <br className="hidden lg:block" />
+                visa
+              </>
+            }
+            description="Tarifs transparents et accompagnement personnalisé, sans mauvaises surprises. Délais donnés à titre indicatif."
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-white" />
-        </div>
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-16">
-          <Badge className="mb-6 py-1.5 px-4 bg-[#00AEEF] hover:bg-[#00AEEF] text-white border-none text-sm uppercase tracking-wider">
-            Expertise Consulaire
-          </Badge>
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-4 drop-shadow-lg">
-            Assistance <span className="text-[#00AEEF]">Visa</span> & Dossiers
-          </h1>
-          <p className="text-lg text-white max-w-xl mx-auto font-bold drop-shadow-md">
-            Simplifiez vos démarches pour l'obtention de vos visas vers le monde entier.
-          </p>
-        </div>
-      </section>
 
-      {/* Pricing & Info */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-black text-slate-900 mb-4">Nos Offres <span className="text-[#00AEEF]">Visa</span></h2>
-            <p className="text-slate-600 font-medium">Tarifs transparents et accompagnement personnalisé.</p>
-          </div>
-
-          <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden mb-16">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-950 text-white">
-                    <th className="py-6 px-8 font-black uppercase tracking-widest text-xs">Destination</th>
-                    <th className="py-6 px-8 font-black uppercase tracking-widest text-xs">Service</th>
-                    <th className="py-6 px-8 font-black uppercase tracking-widest text-xs">Tarif</th>
-                    <th className="py-6 px-8 font-black uppercase tracking-widest text-xs">Délai Est.</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {visaOffers.map((offer, idx) => (
-                    <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                      <td className="py-5 px-8 font-black text-slate-900 flex items-center gap-4">
-                        <span className="text-2xl">{offer.flag}</span>
-                        {offer.country}
-                      </td>
-                      <td className="py-5 px-8 font-bold text-slate-600 text-sm">{offer.service}</td>
-                      <td className="py-5 px-8 font-black text-[#00AEEF]">{offer.tarif}</td>
-                      <td className="py-5 px-8 text-slate-500 font-bold text-sm">{offer.delai}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <div className="bleed border-t border-white/10">
+            <div className="hidden grid-cols-[22.5%_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-8 border-b border-white/10 px-10 py-4 lg:grid">
+              {["Destination", "Service", "Tarif", "Délai estimé"].map((h) => (
+                <span key={h} className="title-xs text-white/50">
+                  {h}
+                </span>
+              ))}
+              <span className="w-[8.5rem]" />
             </div>
-          </div>
-
-          {/* Minimal Trust Features */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: ShieldCheck, title: "Dossiers Sécurisés", desc: "Expertise en montage de dossier pour optimiser vos chances." },
-              { icon: Clock, title: "Délais Respectés", desc: "Suivi rigoureux des calendriers consulaires et rendez-vous." },
-              { icon: NavIcon, title: "Suivi à l'arrivée", desc: "Conseils pour votre installation et vos premiers jours sur place." }
-            ].map((feature, idx) => (
-              <div key={idx} className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 text-center">
-                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                  <feature.icon className="text-[#00AEEF]" size={24} />
+            {OFFERS.map((o, i) => (
+              <Reveal key={o.country} delay={i * 50}>
+                <div className="grid grid-cols-2 items-center gap-x-4 gap-y-4 border-b border-white/10 px-5 py-6 lg:grid-cols-[22.5%_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:gap-8 lg:px-10 lg:py-8">
+                  <span className="col-span-2 flex items-center gap-3 lg:col-span-1">
+                    <span className="title-xs w-10 text-white/50">{o.code}</span>
+                    <span className="h4">{o.country}</span>
+                  </span>
+                  <span className="body-md text-white/60">{o.service}</span>
+                  <span className="body-lg text-right font-semibold text-accent lg:text-left">{o.price}</span>
+                  <span className="body-md text-white/60">{o.delay}</span>
+                  <a
+                    href={waLink(`Bonjour Al-Moustour, je souhaite un visa ${o.country} (${o.service}).`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary justify-self-end px-5 py-3"
+                  >
+                    <span className="button-sm">Demander</span>
+                    <ArrowIcon />
+                  </a>
                 </div>
-                <h4 className="font-black text-slate-900 mb-2">{feature.title}</h4>
-                <p className="text-slate-500 text-sm leading-relaxed">{feature.desc}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-slate-950 text-white overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#00AEEF] rounded-full blur-[100px] opacity-20 -mr-32 -mt-32" />
-        <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-black mb-6">Prêt à voyager ?</h2>
-          <p className="text-slate-400 text-lg mb-10 font-bold">
-            Contactez-nous sur WhatsApp pour lancer votre dossier de visa immédiatement.
-          </p>
-          <a
-            href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#1ebd5a] text-white font-black py-5 px-10 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-xl"
-          >
-            Lancer ma demande
-            <ArrowRight size={24} />
-          </a>
+      <section className="section-y">
+        <div className="container-v">
+          <Head
+            label="Nos engagements"
+            title={
+              <>
+                Un dossier solide, <br className="hidden lg:block" />
+                des délais tenus.
+              </>
+            }
+          />
+          <div className="grid grid-cols-2 gap-x-6 gap-y-16 lg:grid-cols-4">
+            {FEATURES.map((f, i) => (
+              <Reveal key={f.text} delay={i * 90} className="flex flex-col gap-10 lg:gap-[8.375rem]">
+                <div className="flex items-start gap-3">
+                  <f.icon className="h-[3.0625rem] w-[3.0625rem] text-accent" strokeWidth={1.1} />
+                  <span className="text-[0.625rem] font-semibold text-white/50">0{i + 1}</span>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <p className="body-md">
+                    {f.title[0]}
+                    <br />
+                    {f.title[1]}
+                  </p>
+                  <p className="body-md text-white/50">{f.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
+
+      <CtaBanner
+        title={
+          <>
+            Prêt à voyager ? <br className="hidden lg:block" />
+            Lançons votre dossier.
+          </>
+        }
+        text="Contactez-nous sur WhatsApp pour lancer votre dossier de visa immédiatement."
+        cta="Lancer ma demande"
+        waMsg={waMsg}
+      />
 
       <Footer />
       <WhatsAppButton />
