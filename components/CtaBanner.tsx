@@ -2,9 +2,23 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/Reveal";
 import { ArrowIcon } from "@/components/icons/ArrowIcon";
-import { SITE, waLink } from "@/lib/site";
+import { getSiteContent } from "@/lib/content/server";
+import { waLink } from "@/lib/site";
 
-export function CtaBanner({ title, text, cta, waMsg }: { title: ReactNode; text: string; cta: string; waMsg: string }) {
+export async function CtaBanner({
+  title,
+  text,
+  cta,
+  waMsg,
+  service,
+}: {
+  title: ReactNode;
+  text: string;
+  cta: string;
+  waMsg: string;
+  service?: string;
+}) {
+  const { settings } = await getSiteContent();
   return (
     <section className="relative overflow-hidden">
       <Image src="/images/combine-travel.jpg" alt="Voyage et études à l'étranger" fill sizes="100vw" className="object-cover object-[70%_center]" />
@@ -18,12 +32,12 @@ export function CtaBanner({ title, text, cta, waMsg }: { title: ReactNode; text:
         <Reveal delay={120} className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
           <p className="body-xl max-w-xl">{text}</p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <a href={waLink(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-primary justify-center">
+            <a href={waLink(waMsg, { src: "cta-banner", service })} target="_blank" rel="noopener noreferrer" className="btn-primary justify-center">
               <span className="button-sm">{cta}</span>
               <ArrowIcon />
             </a>
-            <a href={`tel:${SITE.phone}`} className="btn-secondary justify-center px-8 py-5">
-              <span className="button-sm">{SITE.phoneDisplay}</span>
+            <a href={`tel:${settings.phone}`} className="btn-secondary justify-center px-8 py-5">
+              <span className="button-sm">{settings.phoneDisplay}</span>
             </a>
           </div>
         </Reveal>

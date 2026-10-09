@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { ArrowIcon } from "@/components/icons/ArrowIcon";
-import { DESTINATIONS, type Destination } from "@/lib/site";
+import { useContent } from "@/components/ContentProvider";
+import type { Destination } from "@/lib/content/types";
 import { BASE_PATH, COUNTRY_PATHS, MAP_HEIGHT, MAP_WIDTH, project } from "@/lib/world-map";
 import { cn } from "@/lib/utils";
 import { ramp, useSectionProgress } from "@/lib/motion";
 
 const ORIGIN = project(-8, 12.64); // Bamako
 
-const PINS = DESTINATIONS.map((d) => {
-  const [x, y] = project(d.lon, d.lat);
-  return { ...d, x, y, px: (x / MAP_WIDTH) * 100, py: (y / MAP_HEIGHT) * 100 };
-});
+function toPins(destinations: Destination[]) {
+  return destinations.map((d) => {
+    const [x, y] = project(d.lon, d.lat);
+    return { ...d, x, y, px: (x / MAP_WIDTH) * 100, py: (y / MAP_HEIGHT) * 100 };
+  });
+}
 
 function arcPath(x: number, y: number) {
   const [ox, oy] = ORIGIN;
@@ -103,16 +106,18 @@ function DestinationCard({ d, className }: { d: Destination; className?: string 
 }
 
 export function DestinationMap() {
+  const { destinations } = useContent();
+  const pins = useMemo(() => toPins(destinations), [destinations]);
   // `active` follows the pointer (desktop floating card); `selected` sticks (mobile panel)
   const [active, setActive] = useState<string | null>(null);
-  const [selected, setSelected] = useState<string>(DESTINATIONS[0].id);
+  const [selected, setSelected] = useState<string>(destinations[0]?.id ?? "");
   const scroller = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   // 0 → 1 while the map rises from the bottom of the screen to its middle
   const reveal = useSectionProgress(mapRef, ["start 0.9", "center 0.5"]);
 
-  const activePin = PINS.find((p) => p.id === active);
-  const selectedDest = DESTINATIONS.find((d) => d.id === selected) ?? DESTINATIONS[0];
+  const activePin = pins.find((p) => p.id === active);
+  const selectedDest = destinations.find((d) => d.id === selected) ?? destinations[0];
 
   // The floating card follows hover: it hides as soon as the pointer leaves the
   // country / pin, with a short grace period so the pointer can reach the card.
@@ -175,7 +180,7 @@ export function DestinationMap() {
                 vectorEffect="non-scaling-stroke"
               />
               {/* Destinations */}
-              {PINS.map((p) => (
+              {pins.map((p) => (
                 <path
                   key={p.id}
                   d={COUNTRY_PATHS[p.id]}
@@ -194,7 +199,7 @@ export function DestinationMap() {
                 />
               ))}
               {/* Routes from Bamako */}
-              {PINS.map((p, i) => (
+              {pins.map((p, i) => (
                 <RouteArc key={`arc-${p.id}`} id={p.id} d={arcPath(p.x, p.y)} index={i} reveal={reveal} on={active === p.id} />
               ))}
             </svg>
@@ -219,7 +224,7 @@ export function DestinationMap() {
             </div>
 
             {/* City pins */}
-            {PINS.map((p, i) => {
+            {pins.map((p, i) => {
               const on = active === p.id;
               return (
                 <button
@@ -287,7 +292,7 @@ export function DestinationMap() {
       <div className="container-v lg:hidden">
         <p className="title-xs mb-3 mt-2 text-white/50">Touchez un pays sur la carte ou choisissez-le :</p>
         <div className="no-scrollbar -mx-5 mb-5 flex gap-2 overflow-x-auto px-5">
-          {DESTINATIONS.map((d) => (
+          {destinations.map((d) => (
             <button
               key={d.id}
               type="button"
@@ -301,7 +306,7 @@ export function DestinationMap() {
             </button>
           ))}
         </div>
-        <DestinationCard key={selectedDest.id} d={selectedDest} className="animate-fade-in" />
+        {selectedDest && <DestinationCard key={selectedDest.id} d={selectedDest} className="animate-fade-in" />}
       </div>
     </div>
   );

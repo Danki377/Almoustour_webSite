@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, CalendarDays, MapPin, Star, Users } from "lucide-react";
 import { ArrowIcon } from "@/components/icons/ArrowIcon";
-import { DESTINATIONS } from "@/lib/site";
+import { useContent } from "@/components/ContentProvider";
 import { cn } from "@/lib/utils";
 
 function Property({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) {
@@ -23,6 +23,7 @@ function Property({ children, icon }: { children: React.ReactNode; icon: React.R
  * slides the destinations from right to left.
  */
 export function FeaturedSection() {
+  const { destinations } = useContent();
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ export function FeaturedSection() {
   const distanceRef = useRef(0);
   const [height, setHeight] = useState<number | null>(null);
   const [current, setCurrent] = useState(1);
-  const total = DESTINATIONS.length;
+  const total = destinations.length;
 
   // The section is exactly as tall as the horizontal distance to travel (+ one screen)
   useEffect(() => {
@@ -106,7 +107,7 @@ export function FeaturedSection() {
               </p>
             </div>
 
-            {DESTINATIONS.map((d, i) => (
+            {destinations.map((d, i) => (
               <article
                 key={d.id}
                 className="group flex h-full w-[85vw] shrink-0 flex-col border-r border-white/10 p-5 sm:w-[24rem] lg:w-[28rem] lg:p-8"

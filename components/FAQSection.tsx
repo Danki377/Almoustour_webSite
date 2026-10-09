@@ -4,50 +4,17 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { HeadSplit } from "@/components/Head";
 import { ArrowIcon } from "@/components/icons/ArrowIcon";
+import { useContent } from "@/components/ContentProvider";
 import { waLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-const FAQS = [
-  {
-    q: "Quelles destinations proposez-vous pour les études ?",
-    a: "Nous accompagnons les étudiants vers la France, le Canada, la Turquie, le Maroc, la Chine, la Russie, l'Inde et les USA.",
-  },
-  {
-    q: "Comment obtenir un tarif étudiant pour mon billet d'avion ?",
-    a: "Il suffit de nous présenter votre attestation d'inscription ou votre carte d'étudiant en cours de validité lors de votre réservation.",
-  },
-  {
-    q: "Quel est votre taux de réussite pour les demandes de visa ?",
-    a: "Grâce à notre expertise technique, nous affichons des taux de réussite élevés (jusqu'à 100% pour certaines destinations comme le Maroc ou la Chine).",
-  },
-  {
-    q: "Proposez-vous des bourses d'études ?",
-    a: "Oui, nous avons des programmes de bourses disponibles pour la Chine, la Russie, la Turquie et le Maroc couvrant souvent le logement et le cycle d'étude.",
-  },
-  {
-    q: "Comment se passe l'accompagnement Campus France ?",
-    a: "Nous gérons l'intégralité de votre compte, de la création du dossier à la préparation intensive pour l'entretien consulaire.",
-  },
-  {
-    q: "Où se trouve votre agence à Bamako ?",
-    a: "Notre agence est située à Sotuba ACI, Avenue de l'Armée, juste à côté du 3ème pont.",
-  },
-  {
-    q: "Quels sont vos horaires d'ouverture ?",
-    a: "Nous vous accueillons du lundi au samedi, de 08h30 à 18h30. Support WhatsApp disponible 7j/7.",
-  },
-  {
-    q: "Est-il possible de payer en plusieurs fois ?",
-    a: "Pour certains services d'accompagnement, des facilités de paiement peuvent être discutées avec nos conseillers.",
-  },
-];
-
 export function FAQSection() {
+  const { faqs } = useContent();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<number | null>(0);
 
   const q = query.trim().toLowerCase();
-  const items = FAQS.map((f, i) => ({ ...f, i })).filter((f) => !q || `${f.q} ${f.a}`.toLowerCase().includes(q));
+  const items = faqs.map((f, i) => ({ q: f.question, a: f.answer, i })).filter((f) => !q || `${f.q} ${f.a}`.toLowerCase().includes(q));
 
   return (
     <section id="faq" className="section-y">
@@ -78,7 +45,7 @@ export function FAQSection() {
           {items.map((f) => {
             const isOpen = open === f.i;
             return (
-              <li key={f.q} className="border-b border-white/10">
+              <li key={f.i} className="border-b border-white/10">
                 <button
                   type="button"
                   onClick={() => setOpen(isOpen ? null : f.i)}
@@ -114,7 +81,7 @@ export function FAQSection() {
           <div className="flex flex-col items-center gap-6 py-14 text-center">
             <p className="body-lg text-white/60">Aucune question ne correspond à « {query} ».</p>
             <a
-              href={waLink(`Bonjour Al-Moustour, j'ai une question : ${query}`)}
+              href={waLink(`Bonjour Al-Moustour, j'ai une question : ${query}`, { src: "faq-search" })}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"

@@ -86,7 +86,7 @@ function Ctas({ className }: { className?: string }) {
         <ArrowIcon />
       </Link>
       <a
-        href={waLink("Bonjour Al-Moustour, je souhaite échanger avec un conseiller pour mon projet de voyage ou d'études.")}
+        href={waLink("Bonjour Al-Moustour, je souhaite échanger avec un conseiller pour mon projet de voyage ou d'études.", { src: "hero" })}
         target="_blank"
         rel="noopener noreferrer"
         className="btn-wa w-full justify-center shadow-2xl shadow-whatsapp/25 sm:w-auto"

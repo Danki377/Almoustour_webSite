@@ -2,7 +2,8 @@ import { ParallaxImage } from "@/components/scroll/ParallaxImage";
 import Link from "next/link";
 import { BogolanStrip } from "@/components/BogolanStrip";
 import { Logo } from "@/components/Logo";
-import { SERVICES, SITE, waLink } from "@/lib/site";
+import { getSiteContent } from "@/lib/content/server";
+import { waLink } from "@/lib/site";
 
 const LINKS = [
   { label: "Services", href: "/#services" },
@@ -10,7 +11,8 @@ const LINKS = [
   { label: "Contacts", href: "/#contact" },
 ];
 
-export function Footer() {
+export async function Footer() {
+  const { settings, services } = await getSiteContent();
   const year = new Date().getFullYear();
 
   return (
@@ -49,22 +51,22 @@ export function Footer() {
               ))}
             </nav>
             <div className="flex flex-col gap-3 lg:w-1/2">
-              <a href={`tel:${SITE.phone}`} className="body-lg hover:text-accent">
-                {SITE.phoneDisplay}
+              <a href={`tel:${settings.phone}`} className="body-lg hover:text-accent">
+                {settings.phoneDisplay}
               </a>
-              <a href={`mailto:${SITE.email}`} className="body-lg break-all hover:text-accent">
-                {SITE.email}
+              <a href={`mailto:${settings.email}`} className="body-lg break-all hover:text-accent">
+                {settings.email}
               </a>
-              <a href={waLink()} target="_blank" rel="noopener noreferrer" className="body-lg hover:text-accent">
+              <a href={waLink(undefined, { src: "footer" })} target="_blank" rel="noopener noreferrer" className="body-lg hover:text-accent">
                 WhatsApp
               </a>
               <p className="body-lg text-white/60">
-                {SITE.address}
+                {settings.address}
                 <br />
-                {SITE.addressHint}
+                {settings.addressHint}
               </p>
               <ul className="mt-4 flex flex-col gap-1.5">
-                {SERVICES.map((s) => (
+                {services.map((s) => (
                   <li key={s.slug}>
                     <Link href={s.href} className="body-md text-white/60 hover:text-white">
                       {s.title}
@@ -87,12 +89,12 @@ export function Footer() {
             </span>
             <span className="absolute bottom-px right-0 top-px hidden w-px bg-white/20 lg:block" />
           </div>
-          <span className="button-sm hidden text-white/60 lg:block">Bamako, Mali — depuis {SITE.since}</span>
+          <span className="button-sm hidden text-white/60 lg:block">Bamako, Mali — depuis {settings.since}</span>
           <div className="flex gap-6 px-5 pb-5 lg:px-10 lg:pb-0">
-            <a href={SITE.facebook} target="_blank" rel="noopener noreferrer" className="button-sm text-white/60 hover:text-white">
+            <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="button-sm text-white/60 hover:text-white">
               Facebook
             </a>
-            <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="button-sm text-white/60 hover:text-white">
+            <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="button-sm text-white/60 hover:text-white">
               Instagram
             </a>
           </div>

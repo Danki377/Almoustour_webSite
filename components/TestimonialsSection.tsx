@@ -2,47 +2,10 @@ import { ParallaxImage } from "@/components/scroll/ParallaxImage";
 import { MapPin, Quote, Star } from "lucide-react";
 import { HeadLabel } from "@/components/Head";
 import { Reveal } from "@/components/Reveal";
+import { getSiteContent } from "@/lib/content/server";
+import type { Testimonial } from "@/lib/content/types";
 
-const TESTIMONIALS = [
-  {
-    name: "Oumar Touré",
-    program: "Spécialisation en Médecine",
-    country: "Maroc",
-    flag: "🇲🇦",
-    image: "/images/maroc.jpg",
-    stamp: { label: "Admis", code: "CMN" },
-    text: "L'agence m'a accompagné pour mon admission en faculté de médecine au Maroc. Démarches claires et transparentes. Une agence vraiment fiable à Bamako ! Je recommande vivement leurs services.",
-  },
-  {
-    name: "Awa Sidibé",
-    program: "Licence en Économie",
-    country: "Canada",
-    flag: "🇨🇦",
-    image: "/images/canada.jpg",
-    stamp: { label: "Admise", code: "YUL" },
-    text: "Je n'y croyais pas, mais AL MOUSTOUR a géré tout mon dossier d'admission au Canada et m'a préparé pour l'entrevue. Aujourd'hui, j'y suis pour mes études. Merci infiniment à toute l'équipe !",
-  },
-  {
-    name: "Mamadou Konaté",
-    program: "Master en Informatique",
-    country: "France",
-    flag: "🇫🇷",
-    image: "/images/france.jpg",
-    stamp: { label: "Visa obtenu", code: "CDG" },
-    text: "La procédure Campus France nous effraie souvent, mais avec l'équipe de cette agence, j'ai été super bien orienté, du choix de la formation jusqu'au visa et à la réservation de mon billet.",
-  },
-  {
-    name: "Fatoumata Diarra",
-    program: "Licence en Gestion",
-    country: "Turquie",
-    flag: "🇹🇷",
-    image: "/images/turquie.jpg",
-    stamp: { label: "Visa obtenu", code: "IST" },
-    text: "J'ai obtenu mon visa d'études pour la Turquie en un temps record ! L'équipe est non seulement très professionnelle, mais ils m'ont même aidée à trouver un logement proche de mon campus.",
-  },
-];
-
-function Person({ t }: { t: (typeof TESTIMONIALS)[number] }) {
+function Person({ t }: { t: Testimonial }) {
   return (
     <div
       tabIndex={0}
@@ -52,8 +15,8 @@ function Person({ t }: { t: (typeof TESTIMONIALS)[number] }) {
         {/* Passport stamp */}
         <span className="absolute right-4 top-4 z-[1] -rotate-[9deg] rounded-[6px] border-2 border-sun bg-canvas/55 p-[3px] text-sun backdrop-blur-[2px]">
           <span className="flex flex-col items-center rounded-[3px] border border-sun/70 px-2.5 py-1 leading-none">
-            <span className="text-[0.625rem] font-bold uppercase tracking-[0.18em]">{t.stamp.label}</span>
-            <span className="mt-1 text-[0.5625rem] font-semibold tracking-[0.2em]">BKO → {t.stamp.code}</span>
+            <span className="text-[0.625rem] font-bold uppercase tracking-[0.18em]">{t.stampLabel}</span>
+            <span className="mt-1 text-[0.5625rem] font-semibold tracking-[0.2em]">BKO → {t.code}</span>
           </span>
         </span>
         <ParallaxImage src={t.image} alt="" sizes="(max-width: 1024px) 300px, 25vw" amount={7} className="absolute inset-0" />
@@ -98,7 +61,8 @@ function Person({ t }: { t: (typeof TESTIMONIALS)[number] }) {
   );
 }
 
-export function TestimonialsSection() {
+export async function TestimonialsSection() {
+  const { testimonials } = await getSiteContent();
   return (
     <section id="testimonials" className="overflow-hidden pb-8 pt-16 lg:py-20">
       <div className="relative flex flex-col-reverse lg:grid lg:grid-cols-2">
@@ -111,8 +75,8 @@ export function TestimonialsSection() {
           <span className="line-y left-1/2 hidden -translate-x-1/2 lg:block" />
           <span className="line-x top-1/2 hidden lg:block" />
           <div className="no-scrollbar flex overflow-x-auto lg:grid lg:grid-cols-2 lg:overflow-visible">
-            {TESTIMONIALS.map((t) => (
-              <Person key={t.name} t={t} />
+            {testimonials.map((t) => (
+              <Person key={t.id} t={t} />
             ))}
           </div>
         </div>

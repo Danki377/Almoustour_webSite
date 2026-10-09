@@ -3,9 +3,11 @@ import { Head } from "@/components/Head";
 import { Reveal } from "@/components/Reveal";
 import { ClipReveal } from "@/components/scroll/ClipReveal";
 import { SplitFlap } from "@/components/SplitFlap";
-import { DESTINATIONS } from "@/lib/site";
+import { getSiteContent } from "@/lib/content/server";
 
-export function AboutSection() {
+export async function AboutSection() {
+  const { destinations, settings } = await getSiteContent();
+  const years = new Date().getFullYear() - settings.since;
   return (
     <section id="about" className="section-y">
       <div className="container-v">
@@ -33,7 +35,7 @@ export function AboutSection() {
           <div className="flex flex-col gap-10">
             <Reveal delay={100}>
               <p className="body-xl text-white">
-                Depuis 2016, Al Moustour Voyages redéfinit les standards de l&apos;accompagnement vers
+                Depuis {settings.since}, Al Moustour Voyages redéfinit les standards de l&apos;accompagnement vers
                 l&apos;international à Bamako. Fondée sur une volonté de transparence radicale, notre agence analyse
                 chaque cas de manière unique pour maximiser vos chances de succès.
               </p>
@@ -42,7 +44,7 @@ export function AboutSection() {
             <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2">
               <Reveal delay={150} className="flex flex-col justify-between gap-8 border-b border-white/10 pb-8 lg:gap-32">
                 <div className="flex flex-col gap-5">
-                  <SplitFlap words={["8+"]} className="self-start text-[2.4rem]" />
+                  <SplitFlap words={[`${years}+`]} className="self-start text-[2.4rem]" />
                   <span className="body-lg">
                     Années
                     <br />
@@ -64,7 +66,7 @@ export function AboutSection() {
                   </span>
                 </div>
                 <div className="flex justify-between" aria-label="Destinations">
-                  {DESTINATIONS.slice(0, 5).map((d) => (
+                  {destinations.slice(0, 5).map((d) => (
                     <span key={d.id} title={d.country} className="button-sm text-white/60">
                       {d.code}
                     </span>

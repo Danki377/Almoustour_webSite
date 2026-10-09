@@ -5,10 +5,12 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Logo } from "@/components/Logo";
 import { ArrowIcon } from "@/components/icons/ArrowIcon";
-import { NAV_LINKS, SITE, waLink } from "@/lib/site";
+import { useContent } from "@/components/ContentProvider";
+import { NAV_LINKS, waLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function Navigation() {
+  const { settings } = useContent();
   // Reading progress, shown as a thin cyan line under the header
   const { scrollYProgress } = useScroll();
   const readScale = useTransform(scrollYProgress, (v) => v);
@@ -58,7 +60,7 @@ export function Navigation() {
             ))}
           </ul>
           <a
-            href={waLink("Bonjour Al-Moustour, je souhaite me renseigner sur vos services.")}
+            href={waLink("Bonjour Al-Moustour, je souhaite me renseigner sur vos services.", { src: "nav" })}
             target="_blank"
             rel="noopener noreferrer"
             className="button-sm relative ml-6 flex items-center px-10 text-white transition-colors hover:text-accent"
@@ -121,11 +123,11 @@ export function Navigation() {
           ))}
         </ul>
         <div className="flex flex-col gap-4">
-          <a href={`tel:${SITE.phone}`} className="body-lg text-white/60">
-            {SITE.phoneDisplay}
+          <a href={`tel:${settings.phone}`} className="body-lg text-white/60">
+            {settings.phoneDisplay}
           </a>
           <a
-            href={waLink("Bonjour Al-Moustour, je souhaite me renseigner sur vos services.")}
+            href={waLink("Bonjour Al-Moustour, je souhaite me renseigner sur vos services.", { src: "nav-mobile" })}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary w-full justify-center"

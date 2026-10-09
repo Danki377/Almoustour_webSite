@@ -18,7 +18,7 @@ export function WhatsAppButton() {
 
   return (
     <a
-      href={waLink("Bonjour ! Je souhaiterais obtenir des informations sur vos services.")}
+      href={waLink("Bonjour ! Je souhaiterais obtenir des informations sur vos services.", { src: "floating" })}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(

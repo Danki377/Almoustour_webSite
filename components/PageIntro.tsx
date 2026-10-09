@@ -14,6 +14,7 @@ export function PageIntro({
   imageAlt,
   cta,
   waMsg,
+  service,
   facts,
 }: {
   label: string;
@@ -23,6 +24,7 @@ export function PageIntro({
   imageAlt: string;
   cta: string;
   waMsg: string;
+  service?: string;
   facts: { value: string; label: string }[];
 }) {
   return (
@@ -45,7 +47,7 @@ export function PageIntro({
             <h1 className="animate-fade-up text-[3rem] font-semibold leading-none tracking-[-0.06em] lg:text-[7rem]">{title}</h1>
             <p className="body-xl animate-fade-up max-w-3xl [animation-delay:150ms]">{lead}</p>
             <div className="animate-fade-up [animation-delay:300ms]">
-              <a href={waLink(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-primary">
+              <a href={waLink(waMsg, { src: "page-intro", service })} target="_blank" rel="noopener noreferrer" className="btn-primary">
                 <span className="button-sm">{cta}</span>
                 <ArrowIcon />
               </a>

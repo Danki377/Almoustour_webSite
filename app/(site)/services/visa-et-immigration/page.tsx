@@ -7,19 +7,11 @@ import { CtaBanner } from "@/components/CtaBanner";
 import { Head, HeadSplit } from "@/components/Head";
 import { Reveal } from "@/components/Reveal";
 import { ArrowIcon } from "@/components/icons/ArrowIcon";
+import { getSiteContent } from "@/lib/content/server";
 import { waLink } from "@/lib/site";
 
 const waMsg = "Bonjour Al-Moustour, j'ai besoin d'informations pour une demande de visa touristique.";
 
-const OFFERS = [
-  { country: "Canada", code: "YUL", flag: "🇨🇦", service: "Visa touristique", price: "650.000 FCFA", delay: "0 à 6 mois" },
-  { country: "Dubaï", code: "DXB", flag: "🇦🇪", service: "Visa express", price: "110.000 FCFA", delay: "24h à 72h" },
-  { country: "Maroc", code: "CMN", flag: "🇲🇦", service: "AEVM", price: "55.000 FCFA", delay: "24h à 72h" },
-  { country: "Oumra", code: "JED", flag: "🇸🇦", service: "Visa", price: "210.000 FCFA", delay: "24h à 72h" },
-  { country: "Turquie", code: "IST", flag: "🇹🇷", service: "Visa touristique", price: "220.000 FCFA", delay: "0 à 30 jours" },
-  { country: "Russie", code: "SVO", flag: "🇷🇺", service: "Visa touristique", price: "250.000 FCFA", delay: "0 à 2 mois" },
-  { country: "USA / Europe", code: "···", flag: "🌐", service: "Rendez-vous & montage", price: "Sur devis", delay: "Variable" },
-];
 
 const FEATURES = [
   { icon: ShieldCheck, title: ["Dossiers", "sécurisés"], text: "Expertise en montage de dossier pour optimiser vos chances." },
@@ -27,7 +19,8 @@ const FEATURES = [
   { icon: MapPin, title: ["Suivi à", "l'arrivée"], text: "Conseils pour votre installation et vos premiers jours sur place." },
 ];
 
-export default function VisaPage() {
+export default async function VisaPage() {
+  const { visaOffers } = await getSiteContent();
   return (
     <main className="min-h-screen overflow-x-clip">
       <Navigation />
@@ -44,6 +37,7 @@ export default function VisaPage() {
         imageAlt="Passeport ouvert avec tampons de visa"
         cta="Lancer ma demande"
         waMsg={waMsg}
+        service="visa-et-immigration"
         facts={[
           { value: "12+", label: "Pays couverts" },
           { value: "24h", label: "Délai express (Dubaï, Maroc, Oumra)" },
@@ -73,8 +67,8 @@ export default function VisaPage() {
               ))}
               <span className="w-[8.5rem]" />
             </div>
-            {OFFERS.map((o, i) => (
-              <Reveal key={o.country} delay={i * 50}>
+            {visaOffers.map((o, i) => (
+              <Reveal key={o.id} delay={i * 50}>
                 <div className="grid grid-cols-2 items-center gap-x-4 gap-y-4 border-b border-white/10 px-5 py-6 lg:grid-cols-[22.5%_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:gap-8 lg:px-10 lg:py-8">
                   <span className="col-span-2 flex items-center gap-3 lg:col-span-1">
                     <span className="title-xs w-10 text-white/50">{o.code}</span>
@@ -84,7 +78,7 @@ export default function VisaPage() {
                   <span className="body-lg text-right font-semibold text-accent lg:text-left">{o.price}</span>
                   <span className="body-md text-white/60">{o.delay}</span>
                   <a
-                    href={waLink(`Bonjour Al-Moustour, je souhaite un visa ${o.country} (${o.service}).`)}
+                    href={waLink(`Bonjour Al-Moustour, je souhaite un visa ${o.country} (${o.service}).`, { src: "visa-offer", service: "visa-et-immigration" })}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-secondary justify-self-end px-5 py-3"
@@ -141,6 +135,7 @@ export default function VisaPage() {
         text="Contactez-nous sur WhatsApp pour lancer votre dossier de visa immédiatement."
         cta="Lancer ma demande"
         waMsg={waMsg}
+        service="visa-et-immigration"
       />
 
       <Footer />

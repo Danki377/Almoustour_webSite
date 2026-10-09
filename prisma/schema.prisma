@@ -1,0 +1,288 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../lib/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Back office: authentication (Better Auth + admin plugin) ────────────────
+// Field names follow the Better Auth schema: do not rename them.
+
+/// role: "superadmin" (everything) · "editor" (offers & content + leads) · "member" (leads only)
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          String    @default("member")
+  banned        Boolean?  @default(false)
+  banReason     String?
+  banExpires    DateTime?
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
+  assignedLeads Lead[]     @relation("LeadAssignee")
+  leadNotes     LeadNote[]
+  auditLogs     AuditLog[]
+}
+
+model Session {
+  id             String   @id
+  token          String   @unique
+  expiresAt      DateTime
+  ipAddress      String?
+  userAgent      String?
+  impersonatedBy String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+}
+
+/// Login methods of a user. For email + password, the hashed password lives here (providerId "credential").
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+/// Better Auth rate limiting of /api/auth/* (shared by every serverless instance).
+model RateLimit {
+  id          String @id
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}
+
+/// Our own fixed-window counters (sign-in attempts per email, lead form).
+model Throttle {
+  key       String   @id
+  count     Int      @default(0)
+  expiresAt DateTime
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String?
+  entityId  String?
+  details   Json?
+  ipHash    String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ─── Site content ───────────────────────────────────────────────────────────
+
+/// Single row (id = "site").
+model SiteSettings {
+  id             String   @id @default("site")
+  whatsapp       String
+  phone          String
+  phoneDisplay   String
+  email          String
+  address        String
+  addressHint    String
+  facebook       String
+  instagram      String
+  mapsEmbed      String
+  mapsLink       String
+  since          Int
+  defaultMessage String
+  /// [{ day: string, time: string }]
+  hours          Json
+  updatedAt      DateTime @updatedAt
+}
+
+model Service {
+  slug      String   @id
+  title     String
+  image     String
+  waMsg     String
+  order     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+/// A study destination (homepage cards, map, student page).
+model Destination {
+  id          String   @id
+  country     String
+  city        String
+  code        String
+  image       String
+  title       String
+  priceLabel  String
+  price       String
+  info        String
+  badge       String
+  scholarship Boolean  @default(false)
+  description String
+  lon         Float
+  lat         Float
+  intro       String
+  procedure   String[]
+  /// { [label: string]: string }
+  expenses    Json
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model VisaOffer {
+  id        String   @id @default(cuid())
+  country   String
+  code      String
+  service   String
+  price     String
+  delay     String
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  name       String
+  program    String
+  country    String
+  code       String
+  stampLabel String
+  image      String
+  text       String
+  active     Boolean  @default(true)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Faq {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Conversions ────────────────────────────────────────────────────────────
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  CONVERTED
+  LOST
+}
+
+enum LeadChannel {
+  WEBSITE
+  WHATSAPP
+  PHONE
+  WALK_IN
+  SOCIAL
+  REFERRAL
+}
+
+model Lead {
+  id            String      @id @default(cuid())
+  name          String
+  phone         String
+  email         String?
+  service       String?
+  destinationId String?
+  message       String?
+  channel       LeadChannel @default(WEBSITE)
+  status        LeadStatus  @default(NEW)
+  /// Amount earned when converted (FCFA)
+  amount        Int?
+  source        String?
+  page          String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  referrer      String?
+  visitorId     String?
+  ipHash        String?
+  assigneeId    String?
+  assignee      User?       @relation("LeadAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  convertedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  notes LeadNote[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([phone])
+}
+
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([leadId])
+}
+
+/// One row per click on a WhatsApp button (logged by /go/whatsapp before redirecting).
+model WhatsAppClick {
+  id            String   @id @default(cuid())
+  source        String
+  page          String?
+  service       String?
+  destinationId String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  referrer      String?
+  visitorId     String?
+  device        String?
+  ipHash        String?
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([source])
+}

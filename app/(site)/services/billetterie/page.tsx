@@ -42,6 +42,7 @@ export default function BilletteriePage() {
         imageAlt="Vue d'un hublot d'avion au coucher du soleil"
         cta="Réserver sur WhatsApp"
         waMsg={waMsg}
+        service="billetterie"
         facts={[
           { value: "5", label: "Régions du monde" },
           { value: "8+", label: "Années d'expérience" },
@@ -119,6 +120,7 @@ export default function BilletteriePage() {
         text="Contactez-nous sur WhatsApp pour obtenir un devis personnalisé en fonction de vos dates et de votre destination."
         cta="Obtenir mon devis"
         waMsg={waMsg}
+        service="billetterie"
       />
 
       <Footer />
