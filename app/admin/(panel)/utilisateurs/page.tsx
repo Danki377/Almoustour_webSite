@@ -45,6 +45,7 @@ export default async function TeamPage({ searchParams }: { searchParams: { ajout
               <span className="flex gap-1">
                 <Badge tone={isAppRole(u.role) ? ROLE_TONE[u.role] : "neutral"}>{isAppRole(u.role) ? ROLE_LABEL[u.role] : u.role}</Badge>
                 {u.banned && <Badge tone="red">Désactivé</Badge>}
+                {!u.banned && u.mustChangePassword && <Badge tone="sun">Mot de passe provisoire</Badge>}
               </span>
             </td>
             <td className={cn(tdClass, "tabular-nums text-white/60")}>{u._count.assignedLeads}</td>
@@ -76,7 +77,7 @@ export default async function TeamPage({ searchParams }: { searchParams: { ajout
               label="Mot de passe provisoire"
               type="password"
               autoComplete="new-password"
-              hint="10 caractères minimum, avec lettres et chiffres."
+              hint="10 caractères minimum, avec lettres et chiffres. Il le remplacera par le sien à sa première connexion."
             />
           </div>
           <div>

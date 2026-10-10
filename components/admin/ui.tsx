@@ -64,12 +64,23 @@ export function EmptyState({ children }: { children: ReactNode }) {
   return <p className="rounded-2xl border border-dashed border-white/10 px-6 py-12 text-center text-sm text-white/40">{children}</p>;
 }
 
-/** Table wrapper: scrolls horizontally on small screens. */
+/**
+ * Data table. On phones each row becomes a card: first cell on its own line,
+ * the other cells wrap below it, the last one (actions) aligned right.
+ */
 export function Table({ head, children }: { head: ReactNode[]; children: ReactNode }) {
   return (
     <div className="overflow-x-auto rounded-2xl bg-deep ring-1 ring-white/10">
-      <table className="w-full min-w-[42rem] text-left text-sm">
-        <thead>
+      <table
+        className={cn(
+          "w-full text-left text-sm sm:min-w-[42rem]",
+          "max-sm:block max-sm:[&_tbody]:block",
+          "max-sm:[&_tr]:flex max-sm:[&_tr]:flex-wrap max-sm:[&_tr]:items-center max-sm:[&_tr]:gap-x-3 max-sm:[&_tr]:gap-y-2 max-sm:[&_tr]:px-4 max-sm:[&_tr]:py-4",
+          "max-sm:[&_td]:block max-sm:[&_td]:min-w-0 max-sm:[&_td]:max-w-full max-sm:[&_td]:p-0",
+          "max-sm:[&_td:first-child]:w-full max-sm:[&_td:last-child]:ml-auto"
+        )}
+      >
+        <thead className="max-sm:hidden">
           <tr className="border-b border-white/10 text-xs text-white/40">
             {head.map((h, i) => (
               <th key={i} className="whitespace-nowrap px-4 py-3 font-medium">

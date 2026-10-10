@@ -15,7 +15,7 @@ const nextConfig = {
   images: { unoptimized: true },
   experimental: {
     // Native / Node-only packages used by the database layer stay out of the bundle
-    serverComponentsExternalPackages: ["ws", "pg"],
+    serverComponentsExternalPackages: ["ws", "pg", "undici"],
   },
   async headers() {
     return [

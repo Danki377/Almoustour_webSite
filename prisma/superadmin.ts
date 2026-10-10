@@ -16,7 +16,7 @@ export async function upsertSuperadmin(prisma: PrismaClient, email: string, pass
   const existing = await prisma.user.findUnique({ where: { email } });
 
   const user = existing
-    ? await prisma.user.update({ where: { id: existing.id }, data: { role: "superadmin", banned: false, banReason: null, banExpires: null } })
+    ? await prisma.user.update({ where: { id: existing.id }, data: { role: "superadmin", banned: false, banReason: null, banExpires: null, mustChangePassword: false } })
     : await prisma.user.create({ data: { id: randomUUID(), email, name, role: "superadmin", emailVerified: true } });
 
   const account = await prisma.account.findFirst({ where: { userId: user.id, providerId: "credential" } });

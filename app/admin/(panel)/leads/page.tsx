@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Download, MessageCircle, Plus, Search } from "lucide-react";
-import { inputClass } from "@/components/admin/form";
+import { inputClass } from "@/lib/admin/styles";
 import { Badge, EmptyState, formatDate, LinkButton, PageHeader, Table, tdClass } from "@/components/admin/ui";
 import { LEAD_CHANNEL, LEAD_CHANNELS, LEAD_STATUS, LEAD_STATUSES, SERVICE_LABEL } from "@/lib/admin/labels";
 import { getSiteContent } from "@/lib/content/server";
@@ -58,7 +58,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: LeadFi
       />
 
       {/* Status tabs */}
-      <div className="no-scrollbar -mx-4 mb-4 flex gap-1.5 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+      <div className="mb-4 flex flex-wrap gap-1.5">
         {[{ value: "", label: "Tous" }, ...LEAD_STATUSES.map((s) => ({ value: s, label: LEAD_STATUS[s].label }))].map((s) => (
           <Link
             key={s.value}
@@ -74,9 +74,9 @@ export default async function LeadsPage({ searchParams }: { searchParams: LeadFi
       </div>
 
       {/* Filters (plain GET form: shareable URLs) */}
-      <form className="mb-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_10rem_10rem_11rem_auto]">
+      <form className="mb-5 grid grid-cols-2 gap-2 lg:grid-cols-[minmax(0,1fr)_10rem_10rem_11rem_auto]">
         {searchParams.statut && <input type="hidden" name="statut" value={searchParams.statut} />}
-        <label className="relative">
+        <label className="relative col-span-2 lg:col-span-1">
           <span className="sr-only">Rechercher</span>
           <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
           <input name="q" defaultValue={searchParams.q} placeholder="Nom, téléphone, email…" className={cn(inputClass, "pl-10")} />

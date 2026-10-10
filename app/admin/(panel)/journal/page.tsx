@@ -24,6 +24,8 @@ const ACTION_LABEL: Record<string, string> = {
   "user.cli_superadmin": "Super admin créé en ligne de commande",
   "user.reset_password": "Mot de passe réinitialisé",
   "user.change_password": "Mot de passe changé",
+  "media.upload": "Image ajoutée",
+  "media.delete": "Image supprimée",
 };
 
 function labelOf(action: string) {

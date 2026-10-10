@@ -4,12 +4,12 @@ import { createContext, useContext, useEffect, useRef, type ReactNode } from "re
 import { useFormState, useFormStatus } from "react-dom";
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import type { ActionState, FormAction } from "@/lib/admin/action";
+import { buttonClass, inputClass } from "@/lib/admin/styles";
 import { cn } from "@/lib/utils";
 
 const StateContext = createContext<ActionState>({});
 
-export const inputClass =
-  "h-11 w-full rounded-xl bg-canvas px-4 text-sm text-white outline-none ring-1 ring-white/10 transition placeholder:text-white/30 focus:ring-accent disabled:opacity-50";
+export { buttonClass, inputClass };
 
 /** Form bound to a server action, with inline success / error feedback. */
 export function ActionForm({
@@ -156,16 +156,6 @@ export function Submit({ children = "Enregistrer", className }: { children?: Rea
       {pending && <Loader2 size={15} className="animate-spin" />}
       {children}
     </button>
-  );
-}
-
-export function buttonClass(variant: "primary" | "secondary" | "danger" | "ghost" = "secondary") {
-  return cn(
-    "inline-flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium transition-colors disabled:opacity-60",
-    variant === "primary" && "bg-accent text-canvas hover:bg-accent-press",
-    variant === "secondary" && "bg-surface text-white ring-1 ring-white/10 hover:bg-white/10",
-    variant === "danger" && "bg-red-500/10 text-red-300 ring-1 ring-red-400/20 hover:bg-red-500/20",
-    variant === "ghost" && "text-white/60 hover:bg-white/5 hover:text-white"
   );
 }
 

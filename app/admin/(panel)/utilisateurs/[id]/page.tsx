@@ -56,7 +56,7 @@ export default async function MemberPage({ params }: { params: { id: string } })
                 label="Nouveau mot de passe provisoire"
                 type="password"
                 autoComplete="new-password"
-                hint="10 caractères minimum, avec lettres et chiffres. Toutes ses sessions seront fermées."
+                hint="10 caractères minimum, avec lettres et chiffres. Toutes ses sessions seront fermées et il devra choisir son propre mot de passe."
               />
               <div>
                 <Submit>Réinitialiser</Submit>

@@ -61,6 +61,8 @@ export async function createMember(_prev: ActionState, formData: FormData): Prom
       body: { ...parsed.data, role: parsed.data.role as "member" },
       headers: headers(),
     });
+    // The super admin chose this password: the member replaces it at first sign-in
+    await db.user.update({ where: { id: user.id }, data: { mustChangePassword: true } });
     await audit(admin.id, "user.create", "User", user.id, { email: user.email, role: parsed.data.role });
   } catch (error) {
     return failure(error, "Impossible de créer ce membre.");
@@ -120,11 +122,15 @@ export async function resetMemberPassword(id: string, _prev: ActionState, formDa
     const h = headers();
     await auth.api.setUserPassword({ body: { userId: id, newPassword: parsed.data }, headers: h });
     await auth.api.revokeUserSessions({ body: { userId: id }, headers: h });
+    await db.user.update({ where: { id }, data: { mustChangePassword: id !== admin.id } });
   } catch (error) {
     return failure(error);
   }
   await audit(admin.id, "user.reset_password", "User", id);
-  return { ok: true, message: "Mot de passe réinitialisé et sessions fermées. Communiquez-le par un canal sûr." };
+  return {
+    ok: true,
+    message: "Mot de passe réinitialisé et sessions fermées. Communiquez-le par un canal sûr : il devra le changer à sa prochaine connexion.",
+  };
 }
 
 export async function removeMember(id: string) {
@@ -143,10 +149,11 @@ export async function removeMember(id: string) {
 // ─── My account ─────────────────────────────────────────────────────────────
 
 export async function changeOwnPassword(_prev: ActionState, formData: FormData): Promise<ActionState> {
-  const me = await requireUser("leads");
+  const me = await requireUser("leads", { pendingPassword: true });
   const parsed = z
     .object({ current: z.string().min(1, "Requis."), password, confirm: z.string() })
     .refine((v) => v.password === v.confirm, { path: ["confirm"], message: "Les deux mots de passe ne correspondent pas." })
+    .refine((v) => v.password !== v.current, { path: ["password"], message: "Choisissez un mot de passe différent de l'actuel." })
     .safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { message: INVALID, errors: errorsOf(parsed.error) };
 
@@ -158,13 +165,14 @@ export async function changeOwnPassword(_prev: ActionState, formData: FormData):
   } catch (error) {
     return failure(error);
   }
+  if (me.mustChangePassword) await db.user.update({ where: { id: me.id }, data: { mustChangePassword: false } });
   await audit(me.id, "user.change_password", "User", me.id);
   // Better Auth issued a new session cookie: reload the page with it
   redirect("/admin/compte?mdp=1");
 }
 
 export async function revokeOtherSessions() {
-  const me = await requireUser("leads");
+  const me = await requireUser("leads", { pendingPassword: true });
   await auth.api.revokeOtherSessions({ headers: headers() });
   await audit(me.id, "auth.revoke_sessions", "User", me.id);
   revalidatePath("/admin/compte");

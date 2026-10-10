@@ -28,6 +28,7 @@ export default async function LoginPage({ searchParams }: { searchParams: { next
             <Field name="password" label="Mot de passe" type="password" autoComplete="current-password" required />
             <Submit className="mt-2 w-full">Se connecter</Submit>
           </ActionForm>
+          <p className="mt-5 text-center text-xs text-white/40">Mot de passe oublié ? Demandez au super admin de le réinitialiser.</p>
         </div>
         <p className="mt-6 flex items-center justify-center gap-2 text-xs text-white/30">
           <Lock size={12} />

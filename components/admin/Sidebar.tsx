@@ -5,9 +5,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BarChart3,
-  FileText,
   GraduationCap,
   HelpCircle,
+  Images,
+  KeyRound,
   LogOut,
   Menu,
   MessageSquareQuote,
@@ -32,10 +33,11 @@ const ICONS: Record<string, LucideIcon> = {
   services: Plane,
   testimonials: MessageSquareQuote,
   faq: HelpCircle,
+  media: Images,
   settings: Settings,
   users: UserCircle,
   audit: ScrollText,
-  account: FileText,
+  account: KeyRound,
 };
 
 export type NavItem = { href: string; label: string; icon: keyof typeof ICONS; badge?: number; group: string };

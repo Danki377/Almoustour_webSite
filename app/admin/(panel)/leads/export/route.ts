@@ -17,7 +17,7 @@ function cell(value: unknown) {
 export async function GET(req: NextRequest) {
   const user = await getSessionUser();
   if (!user) return new NextResponse("Non autorisé", { status: 401 });
-  if (!can(user, "export")) return new NextResponse("Accès refusé", { status: 403 });
+  if (user.mustChangePassword || !can(user, "export")) return new NextResponse("Accès refusé", { status: 403 });
 
   const filters = Object.fromEntries(req.nextUrl.searchParams);
   const leads = await db.lead.findMany({

@@ -7,7 +7,7 @@ import { db } from "@/lib/server/db";
 export const metadata = { title: "Mon compte" };
 
 export default async function AccountPage({ searchParams }: { searchParams: { mdp?: string } }) {
-  const me = await requireUser("leads");
+  const me = await requireUser("leads", { pendingPassword: true });
   const sessions = await db.session.findMany({
     where: { userId: me.id, expiresAt: { gt: new Date() } },
     orderBy: { createdAt: "desc" },
@@ -17,6 +17,14 @@ export default async function AccountPage({ searchParams }: { searchParams: { md
   return (
     <>
       <PageHeader title="Mon compte" description={`${me.name} · ${me.email} · ${ROLE_LABEL[me.role]}`} />
+      {me.mustChangePassword && (
+        <div role="alert" className="mb-6 max-w-4xl rounded-xl bg-accent/10 px-4 py-3 text-sm text-accent ring-1 ring-accent/20">
+          <p className="font-medium">Choisissez votre propre mot de passe pour continuer.</p>
+          <p className="mt-0.5 text-accent/80">
+            Le mot de passe actuel vous a été donné par un administrateur. Remplacez-le par un mot de passe que vous seul connaissez.
+          </p>
+        </div>
+      )}
       {searchParams.mdp && (
         <p role="status" className="mb-6 rounded-xl bg-whatsapp/10 px-4 py-3 text-sm text-whatsapp">
           Mot de passe modifié. Vos autres appareils ont été déconnectés.

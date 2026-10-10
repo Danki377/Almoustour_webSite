@@ -39,6 +39,7 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       lastLoginAt: { type: "date", required: false, input: false },
+      mustChangePassword: { type: "boolean", required: false, input: false, defaultValue: false },
     },
   },
 
@@ -81,24 +82,31 @@ export const auth = betterAuth({
   ],
 });
 
-export type SessionUser = { id: string; email: string; name: string; role: AppRole };
+export type SessionUser = { id: string; email: string; name: string; role: AppRole; mustChangePassword: boolean };
+
+/** User of the session carried by these request headers, validated against the database. */
+export async function sessionUserFrom(requestHeaders: Headers): Promise<SessionUser | null> {
+  const session = await auth.api.getSession({ headers: requestHeaders }).catch(() => null);
+  if (!session || session.user.banned || !isAppRole(session.user.role)) return null;
+  const { id, email, name, role, mustChangePassword } = session.user;
+  return { id, email, name, role: role as AppRole, mustChangePassword: Boolean(mustChangePassword) };
+}
 
 /** Current user, validated against the database once per request. */
-export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
-  const session = await auth.api.getSession({ headers: headers() }).catch(() => null);
-  if (!session || session.user.banned || !isAppRole(session.user.role)) return null;
-  const { id, email, name, role } = session.user;
-  return { id, email, name, role: role as AppRole };
-});
+export const getSessionUser = cache(() => sessionUserFrom(headers()));
 
 export function can(user: Pick<SessionUser, "role"> | null, permission: Permission) {
   return roleCan(user?.role, permission);
 }
 
-/** For pages and server actions: redirects to the login page, or to the dashboard if the role is insufficient. */
-export async function requireUser(permission: Permission = "leads") {
+/**
+ * For pages and server actions: redirects to the login page, or to the dashboard if the role is insufficient.
+ * A member whose password was chosen by a super admin is sent to "Mon compte" until they pick their own.
+ */
+export async function requireUser(permission: Permission = "leads", { pendingPassword = false } = {}) {
   const user = await getSessionUser();
   if (!user) redirect("/admin/login");
+  if (user.mustChangePassword && !pendingPassword) redirect("/admin/compte");
   if (!can(user, permission)) redirect("/admin?refus=1");
   return user;
 }

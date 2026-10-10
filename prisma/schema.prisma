@@ -13,24 +13,27 @@ datasource db {
 
 /// role: "superadmin" (everything) · "editor" (offers & content + leads) · "member" (leads only)
 model User {
-  id            String    @id
-  name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
-  image         String?
-  role          String    @default("member")
-  banned        Boolean?  @default(false)
-  banReason     String?
-  banExpires    DateTime?
-  lastLoginAt   DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                 String    @id
+  name               String
+  email              String    @unique
+  emailVerified      Boolean   @default(false)
+  image              String?
+  role               String    @default("member")
+  banned             Boolean?  @default(false)
+  banReason          String?
+  banExpires         DateTime?
+  lastLoginAt        DateTime?
+  /// Set when a super admin chose the password (new member, reset): the member picks their own at next sign-in
+  mustChangePassword Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
   sessions      Session[]
   accounts      Account[]
   assignedLeads Lead[]     @relation("LeadAssignee")
   leadNotes     LeadNote[]
   auditLogs     AuditLog[]
+  media         Media[]
 }
 
 model Session {
@@ -285,4 +288,21 @@ model WhatsAppClick {
 
   @@index([createdAt])
   @@index([source])
+}
+
+/// An image uploaded to UploadThing from the back office (compressed in the browser first).
+model Media {
+  id           String   @id @default(cuid())
+  /// UploadThing file key, used to delete the file
+  key          String   @unique
+  url          String
+  name         String
+  size         Int
+  width        Int?
+  height       Int?
+  uploadedById String?
+  uploadedBy   User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
 }
