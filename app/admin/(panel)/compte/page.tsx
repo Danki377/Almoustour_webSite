@@ -39,7 +39,7 @@ export default async function AccountPage({ searchParams }: { searchParams: { md
               label="Nouveau mot de passe"
               type="password"
               autoComplete="new-password"
-              hint="10 caractères minimum, avec lettres et chiffres."
+              hint="8 caractères minimum, avec lettres et chiffres."
             />
             <Field name="confirm" label="Confirmer le nouveau mot de passe" type="password" autoComplete="new-password" />
             <div>

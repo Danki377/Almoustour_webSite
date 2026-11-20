@@ -77,7 +77,7 @@ export default async function TeamPage({ searchParams }: { searchParams: { ajout
               label="Mot de passe provisoire"
               type="password"
               autoComplete="new-password"
-              hint="10 caractères minimum, avec lettres et chiffres. Il le remplacera par le sien à sa première connexion."
+              hint="8 caractères minimum, avec lettres et chiffres. Il le remplacera par le sien à sa première connexion."
             />
           </div>
           <div>

@@ -25,7 +25,7 @@ export const auth = betterAuth({
     enabled: true,
     // No public sign-up: members are added by a super admin from /admin/utilisateurs
     disableSignUp: true,
-    minPasswordLength: 10,
+    minPasswordLength: 8,
     maxPasswordLength: 128,
     autoSignIn: false,
   },

@@ -4,8 +4,8 @@ import { hashPassword } from "better-auth/crypto";
 import type { PrismaClient } from "../lib/generated/prisma/client";
 
 export function assertStrongPassword(password: string) {
-  if (password.length < 10 || password.length > 128 || !/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
-    throw new Error("Mot de passe trop faible : 10 caractères minimum, avec lettres et chiffres.");
+  if (password.length < 8 || password.length > 128 || !/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
+    throw new Error("Mot de passe trop faible : 8 caractères minimum, avec lettres et chiffres.");
   }
 }
 

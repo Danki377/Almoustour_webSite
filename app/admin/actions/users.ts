@@ -14,7 +14,7 @@ import { errorsOf } from "@/lib/server/validation";
 
 const password = z
   .string()
-  .min(10, "10 caractères minimum.")
+  .min(8, "8 caractères minimum.")
   .max(128)
   .refine((v) => /[a-zA-Z]/.test(v) && /\d/.test(v), "Au moins une lettre et un chiffre.");
 
@@ -30,7 +30,7 @@ function failure(error: unknown, fallback = "L'opération a échoué."): ActionS
     if (error.status === "FORBIDDEN" || error.status === "UNAUTHORIZED") return { message: "Action non autorisée pour votre rôle." };
     if (error.body?.code === "INVALID_PASSWORD") return { message: INVALID, errors: { current: "Mot de passe actuel incorrect." } };
     if (error.body?.code === "PASSWORD_TOO_SHORT" || error.body?.code === "PASSWORD_TOO_LONG") {
-      return { message: INVALID, errors: { password: "10 à 128 caractères." } };
+      return { message: INVALID, errors: { password: "8 à 128 caractères." } };
     }
   } else {
     console.error("[users]", error);
