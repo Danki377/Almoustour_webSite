@@ -13,12 +13,16 @@ export default async function LoginPage({ searchParams }: { searchParams: { next
   if (isDbConfigured && (await getSessionUser())) redirect("/admin");
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-5 py-16">
-      <div className="w-full max-w-sm">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-5 py-16">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(0,174,239,0.12),transparent)]"
+        aria-hidden
+      />
+      <div className="relative w-full max-w-sm">
         <div className="mb-10 flex justify-center">
           <Logo />
         </div>
-        <div className="rounded-2xl bg-deep p-6 ring-1 ring-white/10 sm:p-8">
+        <div className="rounded-xl border border-white/[0.08] bg-deep p-6 shadow-2xl shadow-black/40 sm:p-8">
           <h1 className="text-xl font-semibold tracking-[-0.03em]">Espace administration</h1>
           <p className="mt-1.5 text-sm text-white/50">Réservé à l&apos;équipe Al Moustour Voyages.</p>
 

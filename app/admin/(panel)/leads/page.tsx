@@ -47,7 +47,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: LeadFi
         description={`${total} demande${total > 1 ? "s" : ""}${Object.values(filtersOnly).some(Boolean) ? " correspondant aux filtres" : ""}.`}
         actions={
           <>
-            <a href={exportHref} className="inline-flex h-10 items-center gap-2 rounded-xl bg-surface px-4 text-sm ring-1 ring-white/10 hover:bg-white/10">
+            <a href={exportHref} className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-white/10 bg-surface px-3.5 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/[0.08]">
               <Download size={15} /> Export CSV
             </a>
             <LinkButton href="/admin/leads/new" variant="primary">
@@ -107,7 +107,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: LeadFi
             </option>
           ))}
         </select>
-        <button type="submit" className="h-11 rounded-xl bg-surface px-4 text-sm ring-1 ring-white/10 hover:bg-white/10">
+        <button type="submit" className="h-10 rounded-lg border border-white/10 bg-surface px-4 text-sm font-medium transition-colors hover:border-white/20 hover:bg-white/[0.08]">
           Filtrer
         </button>
       </form>

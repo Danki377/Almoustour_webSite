@@ -9,9 +9,10 @@ const config: Config = {
       },
       colors: {
         // "Crépuscule" palette — night sky from the logo, sunset glow from the hero film
-        canvas: '#061423',
-        deep: '#081B2D',
-        surface: '#0D2840',
+        // CSS variables so the back office can re-skin them (see `.admin-theme` in globals.css)
+        canvas: 'rgb(var(--c-canvas) / <alpha-value>)',
+        deep: 'rgb(var(--c-deep) / <alpha-value>)',
+        surface: 'rgb(var(--c-surface) / <alpha-value>)',
         accent: {
           DEFAULT: '#00AEEF', // logo cyan
           press: '#0096D1',

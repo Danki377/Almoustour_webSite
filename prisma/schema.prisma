@@ -290,6 +290,26 @@ model WhatsAppClick {
   @@index([source])
 }
 
+/// One page seen on the public site (sent by the browser, bots and signed-in team members excluded).
+/// A visit = a series of page views without 30 min of inactivity; its first page has isEntry = true.
+model PageView {
+  id          String   @id @default(cuid())
+  path        String
+  visitorId   String?
+  isEntry     Boolean  @default(false)
+  /// External site the visit came from (host only), set on the entry page
+  referrer    String?
+  utmSource   String?
+  utmCampaign String?
+  device      String?
+  /// ISO country code from Vercel (x-vercel-ip-country)
+  country     String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([isEntry, createdAt])
+}
+
 /// An image uploaded to UploadThing from the back office (compressed in the browser first).
 model Media {
   id           String   @id @default(cuid())

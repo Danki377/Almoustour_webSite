@@ -10,7 +10,7 @@ export default function AdminError({ error, reset }: { error: Error & { digest?:
   }, [error]);
 
   return (
-    <div className="mx-auto mt-16 flex max-w-md flex-col items-center gap-4 rounded-2xl bg-deep p-8 text-center ring-1 ring-white/10">
+    <div className="mx-auto mt-16 flex max-w-md flex-col items-center gap-4 rounded-xl border border-white/[0.07] bg-deep p-8 text-center">
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-sun/10 text-sun">
         <AlertTriangle size={22} />
       </span>
@@ -23,7 +23,7 @@ export default function AdminError({ error, reset }: { error: Error & { digest?:
       <button
         type="button"
         onClick={reset}
-        className="mt-2 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-canvas hover:bg-accent-press"
+        className="mt-2 inline-flex h-9 items-center gap-2 rounded-lg bg-accent px-3.5 text-sm font-medium text-canvas hover:bg-accent-press"
       >
         <RotateCcw size={15} /> Réessayer
       </button>

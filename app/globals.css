@@ -3,6 +3,21 @@
 @tailwind utilities;
 
 @layer base {
+  /* Site palette ("Crépuscule"), as RGB channels so Tailwind opacity modifiers work */
+  :root {
+    --c-canvas: 6 20 35; /* #061423 */
+    --c-deep: 8 27 45; /* #081B2D */
+    --c-surface: 13 40 64; /* #0D2840 */
+  }
+
+  /* Back office: neutral graphite, so data and status colours carry the meaning */
+  .admin-theme {
+    --c-canvas: 9 11 16; /* #090B10 */
+    --c-deep: 16 19 26; /* #10131A */
+    --c-surface: 26 31 41; /* #1A1F29 */
+    color-scheme: dark;
+  }
+
   * {
     border-color: rgba(255, 255, 255, 0.1);
   }

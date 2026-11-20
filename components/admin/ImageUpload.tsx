@@ -183,7 +183,7 @@ export function MediaPicker({ open, onClose, onPick }: { open: boolean; onClose:
       ref={dialogRef}
       onClose={onClose}
       onClick={(e) => e.target === dialogRef.current && onClose()}
-      className="w-[min(56rem,calc(100vw-2rem))] rounded-2xl bg-deep p-0 text-white ring-1 ring-white/10 backdrop:bg-black/70"
+      className="w-[min(56rem,calc(100vw-2rem))] rounded-xl border border-white/10 bg-deep p-0 text-white backdrop:bg-black/70"
     >
       <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
         <h2 className="text-sm font-semibold">Choisir une image</h2>

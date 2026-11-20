@@ -65,7 +65,7 @@ export default async function LeadPage({ params }: { params: { id: string } }) {
         <div className="flex gap-2">
           <a
             href={`tel:${lead.phone}`}
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-surface px-4 text-sm ring-1 ring-white/10 hover:bg-white/10"
+            className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-white/10 bg-surface px-3.5 text-sm font-medium text-white transition-colors hover:border-white/20 hover:bg-white/[0.08]"
           >
             <Phone size={15} /> Appeler
           </a>
@@ -73,7 +73,7 @@ export default async function LeadPage({ params }: { params: { id: string } }) {
             href={whatsappTo(lead.phone)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-whatsapp px-4 text-sm font-medium text-canvas hover:brightness-110"
+            className="inline-flex h-9 items-center gap-2 rounded-lg bg-whatsapp px-3.5 text-sm font-medium text-canvas transition hover:brightness-110"
           >
             <MessageCircle size={15} /> WhatsApp
           </a>

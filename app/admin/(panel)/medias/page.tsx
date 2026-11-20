@@ -35,7 +35,7 @@ export default async function MediaPage() {
           {items.map((m) => {
             const usedBy = usages.get(m.url) ?? [];
             return (
-              <li key={m.id} className="flex flex-col overflow-hidden rounded-2xl bg-deep ring-1 ring-white/10">
+              <li key={m.id} className="flex flex-col overflow-hidden rounded-xl border border-white/[0.07] bg-deep">
                 <a href={m.url} target="_blank" rel="noopener noreferrer" className="block aspect-[4/3] bg-canvas">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={m.url} alt={m.name} loading="lazy" className="h-full w-full object-cover" />

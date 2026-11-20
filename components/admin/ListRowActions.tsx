@@ -11,7 +11,7 @@ export function ListRowActions({ kind, id, active, href }: { kind: ListKind | "d
         {active ? <EyeOff size={15} /> : <Eye size={15} />}
         <span className="sr-only sm:not-sr-only">{active ? "Masquer" : "Afficher"}</span>
       </ActionButton>
-      <Link href={href} className="inline-flex h-8 items-center gap-2 rounded-xl px-2.5 text-sm text-white/60 hover:bg-white/5 hover:text-white">
+      <Link href={href} className="inline-flex h-8 items-center gap-2 rounded-lg px-2.5 text-sm text-white/60 hover:bg-white/5 hover:text-white">
         <Pencil size={15} />
         <span className="sr-only sm:not-sr-only">Modifier</span>
       </Link>

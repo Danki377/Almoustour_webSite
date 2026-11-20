@@ -1,5 +1,7 @@
+import { cookies } from "next/headers";
 import { logout } from "@/app/admin/actions/auth";
 import { Sidebar, type NavItem } from "@/components/admin/Sidebar";
+import { SIDEBAR_COOKIE } from "@/lib/auth-cookie";
 import { can, requireUser, ROLE_LABEL } from "@/lib/server/auth";
 import { db } from "@/lib/server/db";
 
@@ -36,11 +38,14 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   items.push({ group: "Mon compte", href: "/admin/compte", label: "Mot de passe & sessions", icon: "account" });
 
   return (
-    <div className="min-h-screen lg:flex">
-      <Sidebar items={items} user={{ name: user.name, role: ROLE_LABEL[user.role] }} logout={logout} />
-      <main className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
-        <div className="mx-auto max-w-6xl">{children}</div>
-      </main>
-    </div>
+    <Sidebar
+      items={items}
+      user={{ name: user.name, role: ROLE_LABEL[user.role] }}
+      logout={logout}
+      initialCollapsed={cookies().get(SIDEBAR_COOKIE)?.value === "1"}
+      canAddLead={!user.mustChangePassword}
+    >
+      {children}
+    </Sidebar>
   );
 }
